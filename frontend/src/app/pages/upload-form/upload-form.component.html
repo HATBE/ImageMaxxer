@@ -10,13 +10,12 @@
       *ngIf="previewImage"
       [src]="previewImage"
       alt="Image Preview"
-      class="w-full object-cover rounded-lg mb-4"
+      class="w-full object-cover rounded-lg mb-4 select-none"
     />
 
-    <div>
+    <div *ngIf="!previewImage">
       <app-file-input-picker
         (onFileSelect)="onImagePicked($event)"
-        *ngIf="!previewImage"
       ></app-file-input-picker>
     </div>
 
@@ -24,7 +23,7 @@
       (click)="onChangeImageButtonPressed()"
       *ngIf="previewImage"
       type="button"
-      class="mb-3 w-full cursor-pointer inline-flex justify-center items-center px-6 py-3 bg-gray-800 text-white text-sm font-medium rounded-xl shadow-md hover:bg-indigo-600 focus:outline-none"
+      class="mb-3 w-full cursor-pointer inline-flex justify-center items-center px-6 py-3 bg-gray-800 text-white text-sm font-medium rounded-xl shadow-md hover:bg-gray-600 focus:outline-none"
     >
       Change image
     </button>

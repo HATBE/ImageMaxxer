@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-file-input-picker',
@@ -9,6 +9,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class ImageInputPickerComponent {
   @Output() onFileSelect = new EventEmitter<File>();
+
+  @Input() infoMessage: string = '';
 
   onDragOver(event: DragEvent): void {
     event.preventDefault();
