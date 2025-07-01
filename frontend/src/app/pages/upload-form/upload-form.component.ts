@@ -40,7 +40,7 @@ export class UploadFormComponent {
     formData.append('image', this.selectedImage!);
 
     this.imageService
-      .convertImageTo(formData, AllowedFormats.PNG)
+      .upload(formData)
       .then((response) => {
         console.log(response);
         alert('ok');

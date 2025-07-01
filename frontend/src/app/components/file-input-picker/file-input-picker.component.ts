@@ -11,6 +11,7 @@ export class ImageInputPickerComponent {
   @Output() onFileSelect = new EventEmitter<File>();
 
   @Input() infoMessage: string = '';
+  @Input() allowedFileTypes: string = '*';
 
   onDragOver(event: DragEvent): void {
     event.preventDefault();

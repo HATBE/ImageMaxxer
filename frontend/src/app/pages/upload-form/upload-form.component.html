@@ -15,6 +15,7 @@
 
     <div *ngIf="!previewImage">
       <app-file-input-picker
+        allowedFileTypes="image/png, image/gif, image/jpeg, image/jpg"
         (onFileSelect)="onImagePicked($event)"
       ></app-file-input-picker>
     </div>

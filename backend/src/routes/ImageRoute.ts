@@ -14,13 +14,9 @@ export default class ImageRoute extends AbstractRoute {
   }
 
   protected async registerRoutes() {
-    this.getRouter().post(
-      '/convert/:format',
-      upload.single('image'),
-      async (req: Request, res: Response) => {
-        this.imageController.convertImage(req, res);
-      }
-    );
+    this.getRouter().post('/', upload.single('image'), async (req: Request, res: Response) => {
+      this.imageController.upload(req, res);
+    });
 
     this.getRouter().get(
       '/raw/:name',

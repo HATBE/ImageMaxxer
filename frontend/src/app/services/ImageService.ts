@@ -9,12 +9,9 @@ import { firstValueFrom } from 'rxjs';
 export class ImageService {
   constructor(private http: HttpClient) {}
 
-  public convertImageTo(
-    formData: FormData,
-    format: AllowedFormats
-  ): Promise<{ status: boolean; message: string; data: any }> {
+  public upload(formData: FormData): Promise<{ status: boolean; message: string; data: any }> {
     return firstValueFrom(
-      this.http.post<any>(`http://localhost:3000/api/v1/image/convert/${format}`, formData, {
+      this.http.post<any>(`http://localhost:3000/api/v1/image/`, formData, {
         withCredentials: true,
       })
     );
