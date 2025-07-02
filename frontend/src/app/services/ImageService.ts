@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AllowedFormats } from '../models/AllowedFormats';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({

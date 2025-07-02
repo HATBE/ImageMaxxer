@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ImageInputPickerComponent } from '../../components/file-input-picker/file-input-picker.component';
 import { ImageService } from '../../services/ImageService';
-import { AllowedFormats } from '../../models/AllowedFormats';
 import { HttpErrorResponse } from '@angular/common/module.d-CnjH8Dlt';
 
 @Component({
