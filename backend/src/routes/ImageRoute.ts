@@ -4,6 +4,7 @@ import upload from '../image/multerConfig';
 import ImageController from '../controller/ImageController';
 import { param } from 'express-validator';
 import validateRequest from '../middleware/validate-request';
+import amqp from 'amqplib';
 
 export default class ImageRoute extends AbstractRoute {
   private imageController: ImageController;
@@ -16,6 +17,19 @@ export default class ImageRoute extends AbstractRoute {
   protected async registerRoutes() {
     this.getRouter().post('/', upload.single('image'), async (req: Request, res: Response) => {
       this.imageController.upload(req, res);
+    });
+
+    this.getRouter().get('/testrabbitmq', async (req: Request, res: Response) => {
+      const connection = await amqp.connect('amqp://localhost');
+      const channel = await connection.createChannel();
+
+      await channel.assertQueue('images', { durable: true });
+      channel.sendToQueue('images', Buffer.from('HELLO FROM SERVER '), { persistent: true });
+
+      console.log('Sent task');
+      await channel.close();
+      await connection.close();
+      res.send('ok');
     });
 
     this.getRouter().get(
