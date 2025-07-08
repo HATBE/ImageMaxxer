@@ -5,6 +5,7 @@ import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3
 import fs from 'fs';
 import path from 'path';
 import { Readable } from 'stream';
+import { v4 as uuidv4 } from 'uuid';
 
 export default class ImageController {
   public async upload(req: Request, res: Response) {
@@ -18,7 +19,7 @@ export default class ImageController {
     // TODO: check image sanitize ...
 
     // save image
-    const imagePath = await ImageUploader.upload(fileBuffer);
+    //const imagePath = await ImageUploader.upload(fileBuffer);
 
     // TODO: DEBUG
     const s3 = new S3Client({
@@ -31,9 +32,11 @@ export default class ImageController {
       forcePathStyle: true, // Required for MinIO
     });
 
+    const imageName = `${uuidv4()}.jpg`;
+
     const command = new PutObjectCommand({
       Bucket: 'images',
-      Key: 'uploaded-image.jpg', // The filename in the bucket
+      Key: imageName, // The filename in the bucket
       Body: fileBuffer,
       ContentType: 'image/jpeg', // Optional: helps with serving files correctly
     });
@@ -47,7 +50,7 @@ export default class ImageController {
 
     // TODO: staging db
 
-    res.send(imagePath);
+    res.send(imageName);
   }
 
   public async convert(req: Request, res: Response) {
@@ -69,6 +72,8 @@ export default class ImageController {
 
     // TODO: DEBUG
 
+    const rawImagePath: string = req.params.name || 'default.png';
+
     const s3 = new S3Client({
       endpoint: 'http://localhost:9000',
       region: 'us-east-1',
@@ -79,10 +84,12 @@ export default class ImageController {
       forcePathStyle: true, // Required for MinIO
     });
 
+    console.log(rawImagePath);
+
     try {
       const command = new GetObjectCommand({
         Bucket: 'images',
-        Key: 'uploaded-image.jpg',
+        Key: rawImagePath,
       });
 
       const s3Response = await s3.send(command);
