@@ -1,10 +1,28 @@
 version: '3.8'
+
 services:
   rabbitmq:
     image: rabbitmq:3-management
+    container_name: rabbitmq
     ports:
-      - '5672:5672' # RabbitMQ protocol
-      - '15672:15672' # RabbitMQ management UI
+      - '5672:5672' # RabbitMQ AMQP
+      - '15672:15672' # RabbitMQ Web UI
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - '9000:9000' # MinIO S3 API
+      - '9001:9001' # MinIO Console UI
+    volumes:
+      - minio-data:/data
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    command: server /data --console-address ":9001"
+
+volumes:
+  minio-data:

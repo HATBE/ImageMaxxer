@@ -14,6 +14,7 @@ export default class ImageRoute extends AbstractRoute {
     this.imageController = new ImageController();
   }
 
+  // TODO: REMOVE
   protected async registerRoutes() {
     this.getRouter().post('/', upload.single('image'), async (req: Request, res: Response) => {
       this.imageController.upload(req, res);
