@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { injectable } from 'inversify';
 import S3ClientWrapper from '../lib/s3Client';
-import { GetObjectCommand, GetObjectCommandOutput, PutObjectCommand } from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { fileTypeFromBuffer } from 'file-type';
 import { Readable } from 'stream';
 import { FileResponse } from '../models/FileResponse';
