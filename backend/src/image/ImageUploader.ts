@@ -33,7 +33,7 @@ export default class ImageUploader {
       Bucket: 'images',
       Key: fileName,
       Body: fileBuffer,
-      ContentType: fileType, // Optional: helps with serving files correctly // TODO: uplaod file with orig filetype
+      ContentType: fileType,
     });
 
     try {
