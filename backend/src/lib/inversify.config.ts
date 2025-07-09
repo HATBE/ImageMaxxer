@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { Container } from 'inversify';
 import ImageController from '../controller/ImageController';
 import ImageRoute from '../routes/ImageRoute';
-import ImageUploader from '../image/ImageUploader';
+import S3FileHandler from '../image/S3FileHandler';
 import ImageService from '../services/ImageService';
 
 const container = new Container();
@@ -20,7 +20,7 @@ const bindRoutes = () => {
 };
 
 const bindOther = () => {
-  container.bind(ImageUploader).toSelf();
+  container.bind(S3FileHandler).toSelf();
 };
 
 bindRoutes();

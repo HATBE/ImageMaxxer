@@ -6,6 +6,16 @@ Start up db (MariaDB), file storage (minIO) and Queue (RabbitMQ)
 docker-compose up -d
 ```
 
+# Technologies
+
+- Backend: TS NodeJS / Express
+- Frontend: Angular
+- Worker: TS NodeJS
+- Database: MariaDB
+- File Storage: minIO
+- Queue: RabbitMQ
+- Deployment: Docker
+
 # Concept
 
-![Concept Image](./.img/concept.jpg)
+![Concept Image](./.img/concept.png)

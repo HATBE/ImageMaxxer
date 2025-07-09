@@ -24,6 +24,21 @@ export default class ImageRoute extends AbstractRoute {
     });
 
     // TODO: REMOVE
+    this.getRouter().get(
+      '/:name',
+      param('name')
+        .matches(/^[a-zA-Z0-9_\-\.]+$/)
+        .withMessage('Invalid file name')
+        .isLength({ min: 34, max: 255 }) // min uuid (32) length + dot + ext of min 1 char
+        .withMessage('Filename must be inbetween of 34 and 255 characters')
+        .escape(),
+      validateRequest,
+      async (req: Request, res: Response) => {
+        this.imageController.getRawFile(req, res);
+      }
+    );
+
+    // TODO: REMOVE
     this.getRouter().get('/testrabbitmq', async (req: Request, res: Response) => {
       const connection = await amqp.connect('amqp://localhost');
       const channel = await connection.createChannel();
@@ -36,20 +51,5 @@ export default class ImageRoute extends AbstractRoute {
       await connection.close();
       res.send('ok');
     });
-
-    // TODO: REMOVE
-    this.getRouter().get(
-      '/raw/:name',
-      param('name')
-        .matches(/^[a-zA-Z0-9_\-\.]+$/)
-        .withMessage('Invalid file name')
-        .isLength({ min: 3, max: 255 })
-        .withMessage('Filename must be inbetween of 3 and 255 characters')
-        .escape(),
-      validateRequest,
-      async (req: Request, res: Response) => {
-        this.imageController.getRaw(req, res);
-      }
-    );
   }
 }
