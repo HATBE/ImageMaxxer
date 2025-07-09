@@ -1,59 +1,47 @@
-import path from 'path';
-import fs, { existsSync, mkdirSync } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-import sanitize from 'sanitize-filename';
+import { injectable } from 'inversify';
+import S3ClientWrapper from '../lib/s3Client';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { fileTypeFromBuffer } from 'file-type';
 
+@injectable()
 export default class ImageUploader {
-  private static instance: ImageUploader;
+  private s3Client;
 
-  private constructor() {}
-
-  public static getInstance(): ImageUploader {
-    if (!ImageUploader.instance) {
-      this.instance = new ImageUploader();
-    }
-    return ImageUploader.instance;
+  public constructor() {
+    this.s3Client = S3ClientWrapper.getInstance();
   }
 
-  public static checkPath(rawImagePath: string, folder: string): string {
-    const imageName = sanitize(rawImagePath);
+  private generateFileName(): string {
+    const fileExtension = 'jpg';
+    const fileName = `${uuidv4()}.${fileExtension}`;
 
-    if (!imageName) {
-      throw new Error('No Image Found');
-    }
-
-    const imagePath = path.resolve(folder, imageName);
-    const imagesDir = path.resolve(folder);
-
-    if (!imagePath.startsWith(imagesDir)) {
-      throw new Error('No Image Found');
-    }
-
-    console.log(imagePath);
-
-    if (!fs.existsSync(imagePath)) {
-      throw new Error('No Image Found');
-    }
-
-    return imagePath;
+    return fileName;
   }
 
-  public static async upload(fileBuffer: Buffer): Promise<string> {
-    const uploadDir = path.join(__dirname, `../../data/images`);
+  private async detectMimeType(buffer: Buffer): Promise<string | undefined> {
+    const fileType = await fileTypeFromBuffer(buffer);
+    console.log(fileType?.mime);
+    return fileType?.mime; // e.g., 'image/jpeg'
+  }
 
-    if (!existsSync(uploadDir)) {
-      mkdirSync(uploadDir);
-    }
+  public async upload(fileBuffer: Buffer): Promise<string> {
+    const fileName = this.generateFileName();
+    const fileType = await this.detectMimeType(fileBuffer);
 
-    const outputFilename = `${uuidv4()}.jpg`;
-    const outputPath = path.join(uploadDir, outputFilename);
+    const command = new PutObjectCommand({
+      Bucket: 'images',
+      Key: fileName,
+      Body: fileBuffer,
+      ContentType: fileType, // Optional: helps with serving files correctly // TODO: uplaod file with orig filetype
+    });
 
     try {
-      await fs.promises.writeFile(outputPath, fileBuffer);
-      return outputFilename;
+      await this.s3Client.send(command);
+      console.log('Upload successful.');
     } catch (err) {
-      console.log(err);
-      throw err;
+      console.error('Upload failed:', err);
     }
+    return fileName;
   }
 }

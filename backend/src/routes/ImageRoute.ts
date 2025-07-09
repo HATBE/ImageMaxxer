@@ -5,21 +5,25 @@ import ImageController from '../controller/ImageController';
 import { param } from 'express-validator';
 import validateRequest from '../middleware/validate-request';
 import amqp from 'amqplib';
+import { inject } from 'inversify';
+import JsonResponse from '../models/jsonReponse/JsonResponse';
 
 export default class ImageRoute extends AbstractRoute {
-  private imageController: ImageController;
-
-  constructor() {
+  public constructor(@inject(ImageController) private imageController: ImageController) {
     super();
-    this.imageController = new ImageController();
   }
 
-  // TODO: REMOVE
   protected async registerRoutes() {
     this.getRouter().post('/', upload.single('image'), async (req: Request, res: Response) => {
+      if (!req.file) {
+        res.status(400).json(new JsonResponse(false, 'Please upload an image.').generate());
+        return;
+      }
+
       this.imageController.upload(req, res);
     });
 
+    // TODO: REMOVE
     this.getRouter().get('/testrabbitmq', async (req: Request, res: Response) => {
       const connection = await amqp.connect('amqp://localhost');
       const channel = await connection.createChannel();
@@ -33,6 +37,7 @@ export default class ImageRoute extends AbstractRoute {
       res.send('ok');
     });
 
+    // TODO: REMOVE
     this.getRouter().get(
       '/raw/:name',
       param('name')

@@ -1,56 +1,26 @@
 import { Request, Response } from 'express';
 import JsonResponse from '../models/jsonReponse/JsonResponse';
-import ImageUploader from '../image/ImageUploader';
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
-import fs from 'fs';
-import path from 'path';
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+
 import { Readable } from 'stream';
-import { v4 as uuidv4 } from 'uuid';
+import { inject, injectable } from 'inversify';
+import ImageService from '../services/ImageService';
 
+@injectable()
 export default class ImageController {
-  public async upload(req: Request, res: Response) {
-    if (!req.file) {
-      res.status(400).json(new JsonResponse(false, 'Please upload an image.').generate());
-      return;
-    }
+  public constructor(@inject(ImageService) private imageService: ImageService) {}
 
-    const fileBuffer = req.file.buffer;
+  public async upload(req: Request, res: Response) {
+    const fileBuffer = req.file!.buffer;
 
     // TODO: check image sanitize ...
 
     // save image
-    //const imagePath = await ImageUploader.upload(fileBuffer);
-
-    // TODO: DEBUG
-    const s3 = new S3Client({
-      endpoint: 'http://localhost:9000',
-      region: 'us-east-1',
-      credentials: {
-        accessKeyId: 'minio',
-        secretAccessKey: 'minio123',
-      },
-      forcePathStyle: true, // Required for MinIO
-    });
-
-    const imageName = `${uuidv4()}.jpg`;
-
-    const command = new PutObjectCommand({
-      Bucket: 'images',
-      Key: imageName, // The filename in the bucket
-      Body: fileBuffer,
-      ContentType: 'image/jpeg', // Optional: helps with serving files correctly
-    });
-
-    try {
-      await s3.send(command);
-      console.log('Upload successful.');
-    } catch (err) {
-      console.error('Upload failed:', err);
-    }
+    const imagePath = await this.imageService.upload(fileBuffer);
 
     // TODO: staging db
 
-    res.send(imageName);
+    res.send(imagePath);
   }
 
   public async convert(req: Request, res: Response) {
