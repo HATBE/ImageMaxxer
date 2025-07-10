@@ -2,8 +2,14 @@ WORK IN PROGRESS
 
 Start up db (MariaDB), file storage (minIO) and Queue (RabbitMQ)
 
-```bash
-docker-compose up -d
+```shell
+docker-compose up -d --build
+```
+
+Rebuildand rerun just the worker
+
+```shell
+docker-compose up -d --build worker
 ```
 
 # Technologies
