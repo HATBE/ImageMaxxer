@@ -38,6 +38,19 @@ services:
     command: ['node', 'dist/app.js']
     restart: unless-stopped
 
+  # DEBUG: TODO: REMOVE: LATER USE DEPLOYMENT
+  #worker2:
+  #  build:
+  #    context: ./worker
+  #  container_name: worker2
+  #  depends_on:
+  #    - rabbitmq
+  #    - minio
+  #  env_file:
+  #    - ./worker/.env
+  #  command: ['node', 'dist/app.js']
+  #  restart: unless-stopped
+
   mariadb:
     image: mariadb:11
     container_name: mariadb
