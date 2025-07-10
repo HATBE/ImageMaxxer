@@ -2,27 +2,29 @@ version: '3.8'
 
 services:
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:4-management
     container_name: rabbitmq
     ports:
       - '5672:5672' # RabbitMQ AMQP
-      - '15672:15672' # RabbitMQ Web UI
+      - '15672:15672' # RabbitMQ Web UI # TODO: delete for prod
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    restart: unless-stopped
 
   minio:
     image: minio/minio
     container_name: minio
     ports:
       - '9000:9000' # MinIO S3 API
-      - '9001:9001' # MinIO Console UI
+      - '9001:9001' # MinIO Console UI TODO: DELETE FOR PROD
     volumes:
       - minio-data:/data
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     command: server /data --console-address ":9001"
+    restart: unless-stopped
 
   worker:
     build:
@@ -34,6 +36,22 @@ services:
     env_file:
       - ./worker/.env
     command: ['node', 'dist/app.js']
+    restart: unless-stopped
+
+  mariadb:
+    image: mariadb:11
+    container_name: mariadb
+    ports: # TODO: for prod remove this and just use internal connection NOT EXPOSE!
+      - '33306:3306'
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpass
+      MARIADB_DATABASE: imagemaxxer
+      MARIADB_USER: imagemaxxeruser
+      MARIADB_PASSWORD: apppass
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    restart: unless-stopped
 
 volumes:
   minio-data:
+  mariadb-data:

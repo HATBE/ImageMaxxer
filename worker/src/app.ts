@@ -37,12 +37,17 @@ async function startWorker() {
     if (!msg) return;
 
     const content = msg.content.toString();
-    console.log(`[>] Received task: ${content}`);
+    console.log(`[>] Start task: ${content}`);
+
+    const queueInfo = await channel.checkQueue(queue);
 
     // Simulate work
-    // await new Promise((res) => setTimeout(res, 1000));
+    await new Promise((res) => setTimeout(res, Math.floor(Math.random() * (1000 - 100 + 1)) + 100));
 
     console.log(`[✓] Task done: ${content}`);
+
+    console.log(`QUEUE: ${queueInfo.messageCount}`);
+
     channel.ack(msg);
   });
 }

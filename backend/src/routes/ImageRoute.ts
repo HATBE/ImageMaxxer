@@ -7,6 +7,7 @@ import validateRequest from '../middleware/validate-request';
 import amqp from 'amqplib';
 import { inject } from 'inversify';
 import JsonResponse from '../models/jsonReponse/JsonResponse';
+import { v4 as uuidv4 } from 'uuid';
 
 export default class ImageRoute extends AbstractRoute {
   public constructor(@inject(ImageController) private imageController: ImageController) {
@@ -39,12 +40,14 @@ export default class ImageRoute extends AbstractRoute {
     );
 
     // TODO: REMOVE
-    this.getRouter().get('/testrabbitmq', async (req: Request, res: Response) => {
+    this.getRouter().put('/testrabbitmq', async (req: Request, res: Response) => {
       const connection = await amqp.connect('amqp://localhost');
       const channel = await connection.createChannel();
 
       await channel.assertQueue('images', { durable: true });
-      channel.sendToQueue('images', Buffer.from('HELLO FROM SERVER '), { persistent: true });
+      for (let i = 0; i < 100; i++) {
+        channel.sendToQueue('images', Buffer.from(uuidv4()), { persistent: true });
+      }
 
       console.log('Sent task');
       await channel.close();
