@@ -7,7 +7,6 @@ import validateRequest from '../middleware/validate-request';
 import amqp from 'amqplib';
 import { inject } from 'inversify';
 import JsonResponse from '../models/jsonReponse/JsonResponse';
-import { v4 as uuidv4 } from 'uuid';
 
 export default class ImageRoute extends AbstractRoute {
   public constructor(@inject(ImageController) private imageController: ImageController) {
@@ -46,7 +45,9 @@ export default class ImageRoute extends AbstractRoute {
 
       await channel.assertQueue('images', { durable: true });
       for (let i = 0; i < 100; i++) {
-        channel.sendToQueue('images', Buffer.from(uuidv4()), { persistent: true });
+        channel.sendToQueue('images', Buffer.from('d696dfa6-fb10-4bb5-896a-830604943797.png'), {
+          persistent: true,
+        });
       }
 
       console.log('Sent task');

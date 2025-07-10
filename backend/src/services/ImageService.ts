@@ -1,6 +1,5 @@
 import { inject, injectable } from 'inversify';
-import S3FileHandler from '../image/S3FileHandler';
-import { GetObjectCommand } from '@aws-sdk/client-s3';
+import S3FileHandler from '../lib/S3FileHandler';
 
 @injectable()
 export default class ImageService {

@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { Container } from 'inversify';
 import ImageController from '../controller/ImageController';
 import ImageRoute from '../routes/ImageRoute';
-import S3FileHandler from '../image/S3FileHandler';
+import S3FileHandler from './S3FileHandler';
 import ImageService from '../services/ImageService';
 
 const container = new Container();
