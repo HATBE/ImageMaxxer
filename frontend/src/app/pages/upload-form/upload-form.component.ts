@@ -5,6 +5,7 @@ import { ImageService } from '../../services/ImageService';
 import { HttpErrorResponse } from '@angular/common/module.d-CnjH8Dlt';
 import { BannerComponent } from '../../components/banner/banner/banner.component';
 import { BannerType } from '../../components/banner/BannerType';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload-form',
@@ -32,11 +33,12 @@ export class UploadFormComponent {
   ];
 
   protected error: string | null = null;
+  protected success: string | null = null;
 
   protected selectedImage: File | null = null;
   protected previewImage: string | null = null;
 
-  constructor(private imageService: ImageService) {}
+  constructor(private imageService: ImageService, private router: Router) {}
 
   protected onImagePicked(file: File): void {
     this.selectedImage = file;
@@ -63,6 +65,7 @@ export class UploadFormComponent {
   }
 
   protected onChangeImageButtonPressed() {
+    this.error = null;
     this.resetPickedImage();
   }
 
@@ -74,8 +77,8 @@ export class UploadFormComponent {
     this.imageService
       .upload(formData)
       .then((response) => {
-        console.log(response);
-        alert('ok');
+        this.success = response.message;
+        this.router.navigate(['/edit/', response.data.imagePath]);
       })
       .catch((error: HttpErrorResponse) => {
         this.error =

@@ -6,6 +6,12 @@
     <h2 class="text-2xl font-bold text-white text-center">Upload Image</h2>
 
     <app-banner *ngIf="error" title="TEST" [message]="error" [type]="BannerType.ERROR"></app-banner>
+    <app-banner
+      *ngIf="success"
+      title="TEST"
+      [message]="success"
+      [type]="BannerType.SUCCESS"
+    ></app-banner>
 
     <img
       draggable="false"

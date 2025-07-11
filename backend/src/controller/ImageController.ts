@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import ImageService from '../services/ImageService';
 import { Readable } from 'stream';
+import JsonResponse from '../models/jsonReponse/JsonResponse';
 
 @injectable()
 export default class ImageController {
@@ -18,7 +19,9 @@ export default class ImageController {
 
       // TODO: staging db
 
-      res.send(imagePath);
+      res
+        .status(201)
+        .json(new JsonResponse(true, 'Image uploaded successfully', { imagePath }).generate());
     } catch (err) {
       res.status(400).send(err);
     }

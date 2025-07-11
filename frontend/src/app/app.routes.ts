@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
-import { EditBoxComponent } from './pages/edit-box/edit-box.component';
+import { EditPageComponent } from './pages/edit-page/edit-page.component';
 import { UploadFormComponent } from './pages/upload-form/upload-form.component';
 
 export const routes: Routes = [
@@ -14,8 +14,8 @@ export const routes: Routes = [
         title: 'Upload',
       },
       {
-        path: 'edit',
-        component: EditBoxComponent,
+        path: 'edit/:id',
+        component: EditPageComponent,
         title: 'Edit',
       },
     ],

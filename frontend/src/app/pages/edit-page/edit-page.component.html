@@ -1,16 +1,17 @@
-<section class="container mx-auto text-white">
+<app-loading-spinner [center]="true" class="mx-auto" *ngIf="isLoading"></app-loading-spinner>
+
+<section *ngIf="!isLoading" class="container mx-auto text-white">
   <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
     <div class="md:col-span-1">
-      <img
-        class="w-full object-cover rounded-lg select-none"
-        src="http://localhost:3000/api/v1/image/f40d341e-d49d-4f8a-a452-65b1aaaa463f.jpg"
-      />
+      <img *ngIf="imageUrl" class="w-full object-cover rounded-lg select-none" [src]="imageUrl" />
     </div>
 
     <div class="md:col-span-4 flex flex-col gap-3">
       <h2 class="bg-indigo-800 shadow-xl rounded p-4 text-white text-center text-xl font-bold">
         Convert Image To
       </h2>
+
+      <app-loading-spinner [size]="SpinnerSize.LARGE"></app-loading-spinner>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         <div *ngFor="let format of formatList" (click)="toggleSelection(format)" class="w-full">
