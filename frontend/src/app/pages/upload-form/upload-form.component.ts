@@ -47,7 +47,13 @@ export class UploadFormComponent {
       return;
     }
 
+    if (this.previewImage) {
+      // clean up previous preview image to free memory
+      URL.revokeObjectURL(this.previewImage);
+    }
+    // create base64 iamge preview url
     this.previewImage = URL.createObjectURL(file);
+
     this.error = null;
   }
 
