@@ -52,7 +52,11 @@ export class EditPageComponent implements OnInit {
 
       this.image = response.data;
 
-      this.imageUrl = `http://localhost:3000/api/v1/image/${this.image.id}`;
+      console.log('test 1');
+
+      this.imageUrl = `http://localhost:3000/api/v1/image/${this.image.path}`;
+
+      console.log('test 2');
 
       this.isLoading = false;
     } catch (error) {

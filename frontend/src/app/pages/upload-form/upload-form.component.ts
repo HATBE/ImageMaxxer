@@ -78,7 +78,7 @@ export class UploadFormComponent {
       .upload(formData)
       .then((response) => {
         this.success = response.message;
-        this.router.navigate(['/edit/', response.data.imagePath]);
+        this.router.navigate(['/edit/', response.data.path]);
       })
       .catch((error: HttpErrorResponse) => {
         this.error =

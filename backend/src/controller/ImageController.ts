@@ -21,7 +21,9 @@ export default class ImageController {
 
       res
         .status(201)
-        .json(new JsonResponse(true, 'Image uploaded successfully', { imagePath }).generate());
+        .json(
+          new JsonResponse(true, 'Image uploaded successfully', { path: imagePath }).generate()
+        );
     } catch (err) {
       res.status(400).send(err);
     }

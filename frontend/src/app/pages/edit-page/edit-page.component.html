@@ -11,8 +11,6 @@
         Convert Image To
       </h2>
 
-      <app-loading-spinner [size]="SpinnerSize.LARGE"></app-loading-spinner>
-
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         <div *ngFor="let format of formatList" (click)="toggleSelection(format)" class="w-full">
           <div

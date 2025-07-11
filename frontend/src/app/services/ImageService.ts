@@ -20,8 +20,14 @@ export class ImageService {
   public async getById(id: string): Promise<{ status: boolean; message: string; data: Image }> {
     try {
       const data = await firstValueFrom(
-        this.http.get<any>(`http://localhost:3000/api/v1/image/${id}`, { withCredentials: true })
+        this.http.get<{ status: boolean; message: string; data: Image }>(
+          `http://localhost:3000/api/v1/image/${id}`,
+          { withCredentials: true }
+        )
       );
+
+      console.log(data);
+
       return data;
     } catch (error) {
       console.error('Error:', error);
