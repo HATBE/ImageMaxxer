@@ -1,7 +1,7 @@
 import multer, { FileFilterCallback } from 'multer';
 import path from 'path';
 
-const allowedFileTypes = /jpeg|jpg|png|gif/; // TODO: allow every format and check later
+const allowedFileTypes = /jpeg|jpg|png|gif|webp|avif|tiff|heiff/; // TODO: allow every format and check later
 
 const storage = multer.memoryStorage();
 
@@ -12,7 +12,7 @@ const fileFilter = (req: Express.Request, file: Express.Multer.File, cb: FileFil
   if (mimetype && extname) {
     cb(null, true);
   } else {
-    cb(new Error('Wrong Format. Only JPG, PNG, und GIF are allowed'));
+    cb(new Error('Wrong Format'));
   }
 };
 

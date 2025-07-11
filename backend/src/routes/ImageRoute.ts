@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import AbstractRoute from './AbstractRoute';
-import upload from '../image/multerConfig';
+import upload from '../lib/multerConfig';
 import ImageController from '../controller/ImageController';
 import { param } from 'express-validator';
 import validateRequest from '../middleware/validate-request';

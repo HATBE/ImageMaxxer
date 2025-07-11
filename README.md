@@ -45,3 +45,53 @@ Rebuild and rerun just the worker
 ```shell
 docker-compose up -d --build worker
 ```
+
+# FEATURES TODO:
+
+## FORMAT CONVERSION
+
+- JPG
+- PNG
+- GIF
+- WEBP
+- AVIF
+- TIFF
+- HEIF
+
+## Resizer
+
+- width / height
+- by format (1:1 / 16/9 / ...)
+- fill for empty space
+
+## Filters
+
+- grayscale
+- sepia
+- tint / color overlay
+- blur
+- sharpen
+- invert
+
+## manipulation
+
+- rotate
+- flip
+- add a border
+- add background to png
+
+## compression
+
+- quality (jpg, ...)
+
+## LATER: / PREMIUM
+
+- batch processing, upload like 100 photros and perform same operation (Premium)
+- rate limit for guests, logged in users and premium
+- persist images for user profiles (premium)
+- add watermark
+- meme text generator with image
+- image grid
+- upscale
+- ai stuff
+-
