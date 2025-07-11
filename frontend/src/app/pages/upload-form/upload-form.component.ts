@@ -78,12 +78,11 @@ export class UploadFormComponent {
         alert('ok');
       })
       .catch((error: HttpErrorResponse) => {
-        console.log(
+        this.error =
           (error as HttpErrorResponse).error.message ||
-            (error as HttpErrorResponse).message ||
-            (error as HttpErrorResponse).statusText ||
-            'Unknown error'
-        );
+          (error as HttpErrorResponse).message ||
+          (error as HttpErrorResponse).statusText ||
+          'Unknown error';
       });
   }
 
