@@ -5,6 +5,8 @@
   >
     <h2 class="text-2xl font-bold text-white text-center">Upload Image</h2>
 
+    <app-banner *ngIf="error" title="TEST" [message]="error" [type]="BannerType.ERROR"></app-banner>
+
     <img
       draggable="false"
       *ngIf="previewImage"
@@ -15,7 +17,7 @@
 
     <div *ngIf="!previewImage">
       <app-file-input-picker
-        allowedFileTypes="image/png, image/gif, image/jpeg, image/jpg"
+        [allowedFileTypes]="allowedFileTypes.join(',')"
         (onFileSelect)="onImagePicked($event)"
       ></app-file-input-picker>
     </div>

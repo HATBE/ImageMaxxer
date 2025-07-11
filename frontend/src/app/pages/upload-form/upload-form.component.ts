@@ -3,14 +3,34 @@ import { Component } from '@angular/core';
 import { ImageInputPickerComponent } from '../../components/file-input-picker/file-input-picker.component';
 import { ImageService } from '../../services/ImageService';
 import { HttpErrorResponse } from '@angular/common/module.d-CnjH8Dlt';
+import { BannerComponent } from '../../components/banner/banner/banner.component';
+import { BannerType } from '../../components/banner/BannerType';
 
 @Component({
   selector: 'app-upload-form',
-  imports: [CommonModule, ImageInputPickerComponent],
+  imports: [CommonModule, ImageInputPickerComponent, BannerComponent],
   templateUrl: './upload-form.component.html',
   styleUrl: './upload-form.component.css',
 })
 export class UploadFormComponent {
+  protected BannerType = BannerType;
+
+  protected allowedFileTypes: string[] = [
+    'image/png',
+    'image/gif',
+    'image/jpeg',
+    'image/jpg',
+    'image/webp',
+    'image/jpeg',
+    'image/avif',
+    'image/heif',
+    'image/tiff',
+    'image/tif',
+    'image/jfif',
+    'image/pjpeg',
+    'image/pjp',
+  ];
+
   protected error: string | null = null;
 
   protected selectedImage: File | null = null;
@@ -20,6 +40,13 @@ export class UploadFormComponent {
 
   protected onImagePicked(file: File): void {
     this.selectedImage = file;
+
+    if (!this.checkFileType(file)) {
+      this.error = 'Invalid file type. Please select a valid image file.';
+      this.resetPickedImage();
+      return;
+    }
+
     this.previewImage = URL.createObjectURL(file);
     this.error = null;
   }
@@ -52,5 +79,10 @@ export class UploadFormComponent {
             'Unknown error'
         );
       });
+  }
+
+  private checkFileType(file: File): boolean {
+    const fileType = file.type;
+    return this.allowedFileTypes.includes(fileType.toLowerCase());
   }
 }

@@ -8,7 +8,7 @@
     </div>
 
     <div class="md:col-span-4 flex flex-col gap-3">
-      <h2 class="bg-indigo-600 shadow-xl rounded p-4 text-white text-center text-xl font-bold">
+      <h2 class="bg-indigo-800 shadow-xl rounded p-4 text-white text-center text-xl font-bold">
         Convert Image To
       </h2>
 
@@ -16,16 +16,18 @@
         <div *ngFor="let format of formatList" (click)="toggleSelection(format)" class="w-full">
           <div
             [ngClass]="{
-              'bg-blue-600': selectedFormat === format,
-              'bg-gray-900': selectedFormat !== format,
-              'hover:bg-gray-600': true,
+              'bg-indigo-800': selectedFormat === format,
+              'bg-gray-800': selectedFormat !== format,
+              'hover:bg-gray-600': selectedFormat !== format,
+              'hover:bg-indigo-600': selectedFormat === format,
               'cursor-pointer': true,
               'shadow-xl': true,
               rounded: true,
               'text-white': true,
               'w-full': true,
               'text-center': true,
-              'p-4': true
+              'p-4': true,
+              'select-none': true
             }"
           >
             {{ format }}
