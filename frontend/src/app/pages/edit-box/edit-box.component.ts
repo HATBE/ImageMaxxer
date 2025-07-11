@@ -12,7 +12,10 @@ import { ConversionFormats } from '../../models/ConvertionFormats';
 export class EditBoxComponent {
   conversionFormats = ConversionFormats;
 
-  protected onClickConvertToButton(format: ConversionFormats) {
-    alert(format);
+  formatList = ['JPG', 'PNG', 'GIF', 'WEBP', 'AVIF', 'TIFF', 'HEIF'];
+  selectedFormat: string | null = null;
+
+  toggleSelection(format: string): void {
+    this.selectedFormat = this.selectedFormat === format ? null : format;
   }
 }

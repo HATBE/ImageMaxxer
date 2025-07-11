@@ -13,47 +13,23 @@
       </h2>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-        <div
-          (click)="onClickConvertToButton(conversionFormats.JPG)"
-          class="bg-gray-900 hover:bg-gray-600 cursor-pointer shadow-xl rounded p-4 text-white"
-        >
-          JPG
-        </div>
-        <div
-          (click)="onClickConvertToButton(conversionFormats.PNG)"
-          class="bg-gray-900 hover:bg-gray-600 cursor-pointer shadow-xl rounded p-4 text-white"
-        >
-          PNG
-        </div>
-        <div
-          (click)="onClickConvertToButton(conversionFormats.GIF)"
-          class="bg-gray-900 hover:bg-gray-600 cursor-pointer shadow-xl rounded p-4 text-white"
-        >
-          GIF
-        </div>
-        <div
-          (click)="onClickConvertToButton(conversionFormats.WEBP)"
-          class="bg-gray-900 hover:bg-gray-600 cursor-pointer shadow-xl rounded p-4 text-white"
-        >
-          Webp
-        </div>
-        <div
-          (click)="onClickConvertToButton(conversionFormats.AVIF)"
-          class="bg-gray-900 hover:bg-gray-600 cursor-pointer shadow-xl rounded p-4 text-white"
-        >
-          Avif
-        </div>
-        <div
-          (click)="onClickConvertToButton(conversionFormats.TIFF)"
-          class="bg-gray-900 hover:bg-gray-600 cursor-pointer shadow-xl rounded p-4 text-white"
-        >
-          Tiff
-        </div>
-        <div
-          (click)="onClickConvertToButton(conversionFormats.HEIF)"
-          class="bg-gray-900 hover:bg-gray-600 cursor-pointer shadow-xl rounded p-4 text-white"
-        >
-          Heif
+        <div *ngFor="let format of formatList" (click)="toggleSelection(format)" class="w-full">
+          <div
+            [ngClass]="{
+              'bg-blue-600': selectedFormat === format,
+              'bg-gray-900': selectedFormat !== format,
+              'hover:bg-gray-600': true,
+              'cursor-pointer': true,
+              'shadow-xl': true,
+              rounded: true,
+              'text-white': true,
+              'w-full': true,
+              'text-center': true,
+              'p-4': true
+            }"
+          >
+            {{ format }}
+          </div>
         </div>
       </div>
     </div>
