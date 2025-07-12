@@ -33,7 +33,7 @@
       (click)="onChangeImageButtonPressed()"
       *ngIf="previewImage"
       type="button"
-      class="mb-3 w-full cursor-pointer inline-flex justify-center items-center px-6 py-3 bg-gray-800 text-white text-sm font-medium rounded-xl shadow-md hover:bg-gray-600 focus:outline-none"
+      class="mb-3 w-full cursor-pointer inline-flex justify-center items-center px-6 py-3 bg-gray-800 text-white text-sm font-medium rounded shadow-md hover:bg-gray-600 focus:outline-none"
     >
       Change image
     </button>
@@ -42,7 +42,7 @@
       (click)="onUploadImageButtonPressed()"
       [disabled]="!previewImage"
       type="button"
-      class="w-full cursor-pointer inline-flex justify-center items-center px-6 py-3 bg-indigo-800 text-white text-sm font-medium rounded-xl shadow-md hover:bg-indigo-600 focus:outline-none"
+      class="w-full cursor-pointer inline-flex justify-center items-center px-6 py-3 bg-indigo-800 text-white text-sm font-medium rounded shadow-md hover:bg-indigo-600 focus:outline-none"
     >
       Use Image
     </button>
