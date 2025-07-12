@@ -14,7 +14,7 @@ export const routes: Routes = [
         title: 'Upload',
       },
       {
-        path: 'edit/:id',
+        path: 'edit',
         component: EditPageComponent,
         title: 'Edit',
       },

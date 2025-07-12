@@ -6,66 +6,32 @@ import { SpinnerSize } from '../../components/loading-spinner/SpinnerSize';
 import { Image } from '../../models/Image';
 import { ImageService } from '../../services/ImageService';
 import { HttpErrorResponse } from '@angular/common/module.d-CnjH8Dlt';
+import { ImageEditSettingsFormComponent } from '../../components/image-edit-settings-form/image-edit-settings-form.component';
+import { SharedImageService } from '../../services/SharedImageService';
 
 @Component({
   selector: 'app-edit-page',
-  imports: [CommonModule, RouterModule, LoadingSpinnerComponent],
+  imports: [CommonModule, RouterModule, LoadingSpinnerComponent, ImageEditSettingsFormComponent],
   templateUrl: './edit-page.component.html',
   styleUrl: './edit-page.component.css',
 })
 export class EditPageComponent implements OnInit {
   SpinnerSize = SpinnerSize;
 
-  protected formatList = ['JPG', 'PNG', 'GIF', 'WEBP', 'AVIF', 'TIFF', 'HEIF'];
-  protected selectedFormat: string | null = null;
-
-  protected id: string | null = null;
-  protected image: Image | null = null;
   protected imageUrl: string | null = null;
 
-  protected error: string | null = null;
-  protected isLoading = true;
-
-  public constructor(private route: ActivatedRoute, private imageService: ImageService) {}
+  public constructor(
+    private route: ActivatedRoute,
+    private sharedImageService: SharedImageService
+  ) {}
 
   public ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      this.id = params.get('id');
-      this.loadImage();
-    });
-  }
+    const image = this.sharedImageService.getFile();
 
-  protected toggleSelection(format: string): void {
-    this.selectedFormat = this.selectedFormat === format ? null : format;
-  }
-
-  private setError(message: string): void {
-    this.isLoading = false;
-    this.error = message;
-  }
-
-  private async loadImage(): Promise<void> {
-    this.isLoading = true;
-
-    try {
-      const response = await this.imageService.getById(this.id!);
-
-      this.image = response.data;
-
-      console.log('test 1');
-
-      this.imageUrl = `http://localhost:3000/api/v1/image/${this.image.path}`;
-
-      console.log('test 2');
-
-      this.isLoading = false;
-    } catch (error) {
-      return this.setError(
-        (error as HttpErrorResponse).error.message ||
-          (error as HttpErrorResponse).message ||
-          (error as HttpErrorResponse).statusText ||
-          'Unknown error'
-      );
+    if (!image) {
+      alert('No image file found in shared service.');
     }
+
+    this.imageUrl = image ? URL.createObjectURL(image) : null;
   }
 }

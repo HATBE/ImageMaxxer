@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/module.d-CnjH8Dlt';
 import { BannerComponent } from '../../components/banner/banner/banner.component';
 import { BannerType } from '../../components/banner/BannerType';
 import { Router } from '@angular/router';
+import { SharedImageService } from '../../services/SharedImageService';
 
 @Component({
   selector: 'app-upload-form',
@@ -38,7 +39,7 @@ export class UploadFormComponent {
   protected selectedImage: File | null = null;
   protected previewImage: string | null = null;
 
-  constructor(private imageService: ImageService, private router: Router) {}
+  constructor(private sharedImageService: SharedImageService, private router: Router) {}
 
   protected onImagePicked(file: File): void {
     this.selectedImage = file;
@@ -70,7 +71,17 @@ export class UploadFormComponent {
   }
 
   protected onUploadImageButtonPressed() {
-    const formData = new FormData();
+    if (!this.selectedImage) {
+      this.error = 'No image selected. Please select an image to upload.';
+      return;
+    }
+
+    this.error = null;
+    this.sharedImageService.setFile(this.selectedImage);
+    this.success = 'Successfully uploaded image. Redirecting to edit page...';
+    this.router.navigate(['/edit']);
+
+    /*const formData = new FormData();
 
     formData.append('image', this.selectedImage!);
 
@@ -86,7 +97,7 @@ export class UploadFormComponent {
           (error as HttpErrorResponse).message ||
           (error as HttpErrorResponse).statusText ||
           'Unknown error';
-      });
+      });*/
   }
 
   private checkFileType(file: File): boolean {
