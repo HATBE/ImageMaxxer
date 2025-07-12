@@ -95,3 +95,7 @@ docker-compose up -d --build worker
 - upscale
 - ai stuff
 -
+
+# TODO LIST
+
+- Button class (with enums of color and style options)

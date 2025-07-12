@@ -1,28 +1,11 @@
-<section class="flex flex-col gap-3">
-  <h2 class="bg-indigo-800 shadow-xl rounded p-4 text-white text-center text-xl font-bold">
-    Convert Image To
-  </h2>
+<app-image-conversion-formpart
+  (currentItem)="onFormatChange($event)"
+></app-image-conversion-formpart>
 
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-    <div *ngFor="let format of formatList" (click)="toggleSelection(format)" class="w-full">
-      <div
-        [ngClass]="{
-          'bg-indigo-800': selectedFormat === format,
-          'bg-gray-800': selectedFormat !== format,
-          'hover:bg-gray-600': selectedFormat !== format,
-          'hover:bg-indigo-600': selectedFormat === format,
-          'cursor-pointer': true,
-          'shadow-xl': true,
-          rounded: true,
-          'text-white': true,
-          'w-full': true,
-          'text-center': true,
-          'p-4': true,
-          'select-none': true
-        }"
-      >
-        {{ format }}
-      </div>
-    </div>
-  </div>
-</section>
+<button
+  type="button"
+  class="mb-3 w-full cursor-pointer inline-flex justify-center items-center px-6 py-3 bg-gray-800 text-white text-sm font-medium rounded-xl shadow-md hover:bg-gray-600 focus:outline-none"
+  (click)="onProccessImageButtonClicked()"
+>
+  Proccess
+</button>
