@@ -1,7 +1,7 @@
 import { AllowedImageConversionFormats } from './AllowedImageConversionFormats';
 
 export default interface ImageEditSettings {
-  format: AllowedImageConversionFormats | null;
+  format: 'jpeg' | 'jpg' | 'png' | 'gif' | 'webp' | 'tiff' | 'avif' | null;
   width: number | null;
   height: number | null;
   //upscale: boolean;

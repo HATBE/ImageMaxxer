@@ -4,6 +4,8 @@ import S3FileHandler from './lib/S3FileHandler';
 import sharp from 'sharp';
 import { Readable } from 'stream';
 import { FileResponse } from './model/FileResponse';
+import ImageProcessor from './image/ImageProcessort';
+import ImageEditOptions from './model/ImageEditOptions';
 
 dotenv.config();
 
@@ -43,44 +45,26 @@ async function startWorker() {
 
       const imageBuffer = await streamToBuffer(file.stream);
 
-      const processedImage = await sharp(imageBuffer)
-        .rotate() // Auto-rotate based on EXIF
-        .resize({
-          width: 4000, // Upscale if image is smaller (adds load)
-          withoutEnlargement: false,
+      const options: ImageEditOptions = {
+        format: 'jpeg',
+        resize: {
+          width: 800,
+          height: 200,
           fit: 'cover',
-          kernel: sharp.kernel.lanczos3,
-        })
-        .blur(15) // Strong Gaussian blur — expensive
-        .modulate({
-          brightness: 1.2, // Simulate HDR boost
-          saturation: 1.5,
-          hue: 90,
-        })
-        .sharpen({
-          sigma: 3,
-          m1: 1.5,
-          m2: 0.5,
-          x1: 2,
-          y2: 10,
-          y3: 20,
-        }) // Custom sharpening
-        .linear(1.2, -30) // Contrast manipulation (multiply + bias)
-        .gamma(2.2) // Apply gamma correction
-        .toFormat('jpeg', {
-          quality: 90,
-          progressive: true,
-          chromaSubsampling: '4:4:4',
-        })
-        .withMetadata({
-          exif: {
-            IFD0: {
-              Artist: 'Systemaufwand Generator 9000',
-              Copyright: '© 2025 by You',
-            },
-          },
-        })
-        .toBuffer();
+          upscale: true,
+        },
+        fillColor: '#ffffff',
+        rotate: null,
+        flipHorizontal: true,
+        flipVertical: false,
+        compressionQuality: 82,
+        border: null,
+        filters: null,
+      };
+
+      const imageProccessor = new ImageProcessor(imageBuffer, options);
+
+      const processedImage = await imageProccessor.build();
 
       fileHandler.upload(processedImage);
 

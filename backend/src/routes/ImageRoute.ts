@@ -44,11 +44,11 @@ export default class ImageRoute extends AbstractRoute {
       const channel = await connection.createChannel();
 
       await channel.assertQueue('images', { durable: true });
-      for (let i = 0; i < 100; i++) {
-        channel.sendToQueue('images', Buffer.from('d696dfa6-fb10-4bb5-896a-830604943797.png'), {
-          persistent: true,
-        });
-      }
+      // for (let i = 0; i < 100; i++) {
+      channel.sendToQueue('images', Buffer.from('0d76b5c8-6730-4f01-bc04-1291ea8debe4.png'), {
+        persistent: true,
+      });
+      //}
 
       console.log('Sent task');
       await channel.close();
