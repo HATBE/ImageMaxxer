@@ -15,8 +15,8 @@ export default class ImageService {
       const options: ImageEditOptions = {
         format: 'gif',
         resize: {
-          width: 800,
-          height: 200,
+          width: 6000,
+          height: 5000,
           fit: 'contain',
           upscale: true,
         },

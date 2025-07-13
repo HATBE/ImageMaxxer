@@ -50,39 +50,38 @@ docker-compose up -d --build worker
 
 ## FORMAT CONVERSION
 
-- JPG
-- PNG
-- GIF
-- WEBP
-- AVIF
-- TIFF
-- HEIF
+- [✓] JPG
+- [✓] PNG
+- [✓] GIF
+- [✓] WEBP
+- [✓] AVIF
+- [✓] TIFF
 
 ## Resizer
 
-- width / height
-- by format (1:1 / 16/9 / ...)
-- fill for empty space
+- [✓] width / height
+- [wip (frontend)] by format (1:1 / 16/9 / ...)
+- [✓] fill for empty space
 
 ## Filters
 
-- grayscale
-- sepia
-- tint / color overlay
-- blur
-- sharpen
-- invert
+- [✓] grayscale
+- [✖] sepia
+- [✖] tint / color overlay
+- [✓] blur
+- [✖] sharpen
+- [✓] invert
 
 ## manipulation
 
-- rotate
-- flip
-- add a border
-- add background to png
+- [✓] rotate
+- [✓] flip
+- [✓] add a border
+- [✖] add background to png
 
 ## compression
 
-- quality (jpg, ...)
+- [✓] quality (jpg, ...)
 
 ## LATER: / PREMIUM
 
@@ -92,10 +91,11 @@ docker-compose up -d --build worker
 - add watermark
 - meme text generator with image
 - image grid
-- upscale
+- [✓] upscale
 - ai stuff
 -
 
 # TODO LIST
 
 - Button class (with enums of color and style options)
+- Restrictions, like max pixel size, max file size, ... backend, worker should do what it want, maybe later roles or so.... but all validations on backend not on worker
