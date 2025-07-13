@@ -1,80 +1,54 @@
-import amqp from 'amqplib';
 import dotenv from 'dotenv';
 import S3FileHandler from './lib/S3FileHandler';
-import sharp from 'sharp';
 import { Readable } from 'stream';
 import { FileResponse } from './model/FileResponse';
 import ImageProcessor from './image/ImageProcessort';
-import ImageEditOptions from './model/ImageEditOptions';
+import RabbitMQConnector from './lib/RabbitMQConnector';
+import QueueImageMessage from './model/QueueImageMessage';
 
 dotenv.config();
 
 const queue = 'images';
 
-async function connectWithRetry(url: string, retries = 10, delay = 5000): Promise<amqp.Channel> {
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    try {
-      const connection = await amqp.connect(url);
-      console.log(`Connected to RabbitMQ (attempt ${attempt})`);
-      return connection.createChannel();
-    } catch (err) {
-      console.error(`Connection failed (attempt ${attempt}/${retries})`);
-      if (attempt === retries) throw err;
-      await new Promise((res) => setTimeout(res, delay));
-    }
-  }
-  throw new Error('Unable to connect to RabbitMQ after retries');
-}
-
 async function startWorker() {
-  const channel = await connectWithRetry(`${process.env.QUEUE_HOSTNAME}`);
-  await channel.assertQueue(queue, { durable: true });
-  channel.prefetch(1); // Process one message at a time
+  const connection = new RabbitMQConnector();
+  await connection.connectWithRetry(`${process.env.QUEUE_HOSTNAME}`);
 
-  console.log(`[x] Waiting for tasks...`);
+  await connection.getChannel().assertQueue(queue, { durable: true });
+  connection.getChannel().prefetch(1); // process one message at a time
 
-  channel.consume(queue, async (msg) => {
+  console.log(`Waiting for tasks...`);
+
+  connection.getChannel().consume(queue, async (msg) => {
     if (!msg) return;
 
-    const content = msg.content.toString();
-    console.log(`[>] Start task: ${content}`);
+    const content: QueueImageMessage = JSON.parse(msg.content.toString());
+
+    console.log(`[>] Start task: ${content.id}`);
 
     try {
+      const queueInfo = await connection.getChannel().checkQueue(queue);
+      console.log(`Items in QUEUE: ${queueInfo.messageCount}`);
+
+      console.log('Options:', content.options);
+
       const fileHandler = new S3FileHandler();
-      const file: FileResponse = await fileHandler.get(content);
+
+      const file: FileResponse = await fileHandler.get(content.path);
 
       const imageBuffer = await streamToBuffer(file.stream);
 
-      const options: ImageEditOptions = {
-        format: 'jpeg',
-        resize: {
-          width: 800,
-          height: 200,
-          fit: 'cover',
-          upscale: true,
-        },
-        fillColor: '#ffffff',
-        rotate: null,
-        flipHorizontal: true,
-        flipVertical: false,
-        compressionQuality: 82,
-        border: null,
-        filters: null,
-      };
-
-      const imageProccessor = new ImageProcessor(imageBuffer, options);
+      const imageProccessor = new ImageProcessor(imageBuffer, content.options);
 
       const processedImage = await imageProccessor.build();
 
       fileHandler.upload(processedImage);
 
-      console.log(`[✓] Task done: ${content}`);
+      console.log(`[✓] Task done: ${content.id}`);
     } catch (error) {
-      console.error(`[!] Error processing task ${content}:`, error);
+      console.error(`[!] Error processing task ${content.id}:`, error);
     } finally {
-      const queueInfo = await channel.checkQueue(queue);
-      console.log(`QUEUE: ${queueInfo.messageCount}`);
-      channel.ack(msg);
+      connection.getChannel().ack(msg);
     }
   });
 }

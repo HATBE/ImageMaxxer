@@ -4,7 +4,6 @@ import upload from '../lib/multerConfig';
 import ImageController from '../controller/ImageController';
 import { param } from 'express-validator';
 import validateRequest from '../middleware/validate-request';
-import amqp from 'amqplib';
 import { inject } from 'inversify';
 import JsonResponse from '../models/jsonReponse/JsonResponse';
 
@@ -23,13 +22,12 @@ export default class ImageRoute extends AbstractRoute {
       this.imageController.upload(req, res);
     });
 
-    // TODO: REMOVE
     this.getRouter().get(
       '/:name',
       param('name')
         .matches(/^[a-zA-Z0-9_\-\.]+$/)
         .withMessage('Invalid file name')
-        .isLength({ min: 34, max: 255 }) // min uuid (32) length + dot + ext of min 1 char
+        .isLength({ min: 34, max: 40 }) // min value: uuid length (32) + dot (1) + ext of min 1 char = 34, max value = 40, maybe long ext?
         .withMessage('Filename must be inbetween of 34 and 255 characters')
         .escape(),
       validateRequest,
@@ -38,7 +36,7 @@ export default class ImageRoute extends AbstractRoute {
       }
     );
 
-    // TODO: REMOVE
+    /*// TODO: REMOVE
     this.getRouter().put('/testrabbitmq', async (req: Request, res: Response) => {
       const connection = await amqp.connect('amqp://localhost');
       const channel = await connection.createChannel();
@@ -54,6 +52,6 @@ export default class ImageRoute extends AbstractRoute {
       await channel.close();
       await connection.close();
       res.send('ok');
-    });
+    });*/
   }
 }

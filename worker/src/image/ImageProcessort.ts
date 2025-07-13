@@ -16,12 +16,12 @@ export default class ImageProcessor {
     }
 
     this.convertToFormat();
-    this.resize();
+    this.applyFilters();
     this.rotate();
     this.flip();
+    this.resize();
     this.applyBorder();
     this.compress();
-    this.applyFilters();
 
     return await this.sharp.toBuffer();
   }

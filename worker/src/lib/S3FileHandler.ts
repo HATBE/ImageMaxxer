@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import S3ClientWrapper from './s3Client';
+import S3ClientWrapper from './S3ClientWrapper';
 import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { fileTypeFromBuffer } from 'file-type';
 import { Readable } from 'stream';
