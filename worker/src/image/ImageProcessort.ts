@@ -27,15 +27,24 @@ export default class ImageProcessor {
   }
 
   private resize(): void {
-    if (this.options.resize) {
-      this.sharp.resize({
-        width: this.options.resize.width,
-        height: this.options.resize.height,
-        fit: this.options.resize.fit,
-        withoutEnlargement: !this.options.resize.upscale,
-        background: this.options.fillColor ?? undefined,
-      });
+    if (!this.options.resize) {
+      return;
     }
+
+    if (this.options.resize.width <= 0 || this.options.resize.height <= 0) {
+      console.warn(
+        `Invalid resize dimensions: ${this.options.resize.width}x${this.options.resize.height}. Skipping resize.`
+      );
+      return;
+    }
+
+    this.sharp.resize({
+      width: this.options.resize.width,
+      height: this.options.resize.height,
+      fit: this.options.resize.fit,
+      withoutEnlargement: !this.options.resize.upscale,
+      background: this.options.fillColor ?? undefined,
+    });
   }
 
   private applyFilters(): void {

@@ -1,4 +1,6 @@
-WORK IN PROGRESS
+# WORK IN PROGRESS
+
+Currently i am in a prototype phase, the code looks like a prototype
 
 # Technologies
 

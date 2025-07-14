@@ -30,7 +30,7 @@ async function startWorker() {
       const queueInfo = await connection.getChannel().checkQueue(queue);
       console.log(`Items in QUEUE: ${queueInfo.messageCount}`);
 
-      console.log('Options:', content.options);
+      //console.log('Options:', content.options);
 
       const fileHandler = new S3FileHandler();
 

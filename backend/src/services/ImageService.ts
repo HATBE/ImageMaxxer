@@ -49,8 +49,10 @@ export default class ImageService {
 
       await channel.assertQueue('images', { durable: true });
 
+      const id = uuidv4();
+
       const message: QueueImageMessage = {
-        id: uuidv4(),
+        id,
         timestamp: Date.now(),
         options,
         path: filepath,
@@ -62,7 +64,7 @@ export default class ImageService {
       await channel.close();
       await connection.close();
 
-      return filepath; // TODO: open ws or send ok message or something, just handle later that client checks a ws to check the state of the image? idk, lets wait and look maybe make a sql db thing or so, lets see
+      return id; // TODO: open ws or send ok message or something, just handle later that client checks a ws to check the state of the image? idk, lets wait and look maybe make a sql db thing or so, lets see
     } catch (err) {
       throw err;
     }
