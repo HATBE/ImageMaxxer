@@ -1,0 +1,29 @@
+<div
+  class="d-flex justify-content-center align-items-center w-100"
+  (drop)="onDrop($event)"
+  (dragover)="onDragOver($event)"
+>
+  <label
+    for="dropzone-file"
+    class="d-flex flex-column justify-content-center align-items-center w-100 border border-2 border-secondary rounded-3 p-4 bg-light text-center"
+    style="height: 16rem; cursor: pointer"
+  >
+    <div class="d-flex flex-column justify-content-center align-items-center py-3">
+      <i style="font-size: 40px" class="bi bi-cloud-arrow-up"></i>
+      <p class="mb-1 text-muted">
+        <strong>Click to upload</strong>
+        or drag and drop
+      </p>
+      <p class="small text-muted">
+        {{ infoMessage }}
+      </p>
+    </div>
+    <input
+      id="dropzone-file"
+      type="file"
+      class="d-none"
+      [accept]="allowedFileTypes"
+      (change)="onImagePicked($event)"
+    />
+  </label>
+</div>

@@ -1,0 +1,48 @@
+<section class="container">
+  <div class="row">
+    <div class="col-12 offset-xl-4 col-xl-4 offset-md-3 col-md-5 card rounded-4 p-0">
+      <div class="card-body text-dark">
+        <form (submit)="onUploadImageButtonPressed()">
+          <h2 class="h4 fw-bold text-dark text-center">Upload Image</h2>
+
+          <app-banner *ngIf="error" [message]="error" [type]="BannerType.ERROR"></app-banner>
+
+          <app-banner *ngIf="success" [message]="success" [type]="BannerType.SUCCESS"></app-banner>
+
+          <img
+            draggable="false"
+            *ngIf="previewImage"
+            [src]="previewImage"
+            alt="Image Preview"
+            class="w-100 object-cover user-select-none rounded-3 border border-dark"
+          />
+
+          <app-file-input-picker
+            *ngIf="!previewImage"
+            [allowedFileTypes]="allowedFileTypes.join(',')"
+            (onFileSelect)="onImagePicked($event)"
+          ></app-file-input-picker>
+
+          <div class="d-grid gap-2 mx-auto mt-2">
+            <button
+              (click)="onChangeImageButtonPressed()"
+              *ngIf="previewImage"
+              class="btn btn-secondary w-100"
+              type="button"
+            >
+              Change image
+            </button>
+            <button
+              (click)="onUploadImageButtonPressed()"
+              [disabled]="!previewImage"
+              class="btn btn-primary w-100"
+              type="button"
+            >
+              Use Image
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

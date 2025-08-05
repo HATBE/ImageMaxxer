@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { EditPageComponent } from './pages/edit-page/edit-page.component';
-import { UploadFormComponent } from './pages/upload-form/upload-form.component';
+import { UploadPageComponent } from './pages/upload-page/upload-page.component';
 
 export const routes: Routes = [
   {
@@ -10,7 +10,7 @@ export const routes: Routes = [
       { path: '', component: LandingPageComponent, title: 'Home' },
       {
         path: 'upload',
-        component: UploadFormComponent,
+        component: UploadPageComponent,
         title: 'Upload',
       },
       {
