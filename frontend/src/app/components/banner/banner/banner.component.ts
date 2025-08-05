@@ -11,6 +11,7 @@ import { BannerType } from './BannerType';
 export class BannerComponent {
   @Input() type: BannerType = BannerType.INFO;
   @Input() message: string = 'NO MESSAGE';
+  @Input() mb: boolean = false;
 
   protected title: string | null = null;
   protected alertCssClass: String = 'alert-primary';

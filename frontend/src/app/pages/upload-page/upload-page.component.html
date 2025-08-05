@@ -5,9 +5,19 @@
         <form (submit)="onUploadImageButtonPressed()">
           <h2 class="h4 fw-bold text-dark text-center">Upload Image</h2>
 
-          <app-banner *ngIf="error" [message]="error" [type]="BannerType.ERROR"></app-banner>
+          <app-banner
+            *ngIf="error"
+            [mb]="true"
+            [message]="error"
+            [type]="BannerType.ERROR"
+          ></app-banner>
 
-          <app-banner *ngIf="success" [message]="success" [type]="BannerType.SUCCESS"></app-banner>
+          <app-banner
+            [mb]="true"
+            *ngIf="success"
+            [message]="success"
+            [type]="BannerType.SUCCESS"
+          ></app-banner>
 
           <img
             draggable="false"
