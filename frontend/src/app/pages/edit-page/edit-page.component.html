@@ -4,7 +4,7 @@
     <div class="col-12 col-md-4">
       <img
         *ngIf="previewImage"
-        class="w-100 object-fit-cover rounded-4 user-select-none"
+        class="w-100 object-fit-cover rounded-4 user-select-none border border-dark"
         draggable="false"
         [src]="previewImage"
       />
@@ -16,7 +16,7 @@
         <div class="card-body">
           <form>
             <!-- Conversion -->
-            <div class="bg-body-tertiary rounded-3 p-3 mb-4">
+            <div class="bg-body-tertiary rounded-3 p-3 mb-3">
               <h5 class="mb-3">Conversion</h5>
               <div class="row g-3">
                 <div class="col-12 col-md-6">
@@ -47,7 +47,7 @@
             </div>
 
             <!-- Sizing & rotation -->
-            <div class="bg-body-tertiary rounded-3 p-3 mb-4">
+            <div class="bg-body-tertiary rounded-3 p-3 mb-3">
               <h5 class="mb-3">Size & Orientation</h5>
               <div class="row g-3">
                 <div class="col-12 col-md-6">
@@ -90,7 +90,7 @@
                     <option value="270">270°</option>
                   </select>
                 </div>
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-3">
                   <label for="flip" class="form-label">Flip</label>
                   <select class="form-select" id="flip">
                     <option value="none" selected>None</option>
@@ -98,15 +98,8 @@
                     <option value="vertical">Vertical</option>
                   </select>
                 </div>
-              </div>
-            </div>
-
-            <!-- Fill colour & border -->
-            <div class="bg-body-tertiary rounded-3 p-3 mb-4">
-              <h5 class="mb-3">Fill & Border</h5>
-              <div class="row g-3">
-                <div class="col-12 col-md-6">
-                  <label for="fillcolor" class="form-label">Fill colour</label>
+                <div class="col-12">
+                  <label for="fillcolor" class="form-label">Fill color</label>
                   <input
                     type="color"
                     class="form-control form-control-color w-100"
@@ -114,12 +107,19 @@
                     value="#563d7c"
                   />
                 </div>
-                <div class="col-12 col-md-6">
-                  <label class="form-label">Border colour</label>
+              </div>
+            </div>
+
+            <!-- Fill color & border -->
+            <div class="bg-body-tertiary rounded-3 p-3 mb-3">
+              <h5 class="mb-3">Fill & Border</h5>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label">Border color</label>
                   <input
                     type="color"
                     class="form-control form-control-color w-100"
-                    id="border-colour"
+                    id="border-color"
                     value="#000000"
                   />
                 </div>
@@ -144,7 +144,7 @@
             </div>
 
             <!-- Filters -->
-            <div class="bg-body-tertiary rounded-3 p-3">
+            <div class="bg-body-tertiary rounded-3 p-3 mb-3">
               <h5 class="mb-3">Filters</h5>
               <div class="row g-4">
                 <div class="col-12 col-md-6">
@@ -197,6 +197,9 @@
                 </div>
               </div>
             </div>
+
+            <!-- SUBMIT -->
+            <button class="btn btn-primary w-100">Send</button>
           </form>
         </div>
       </div>
