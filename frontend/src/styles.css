@@ -1,0 +1,8 @@
+body {
+  background-color: #e3e5e6 !important;
+  color: var(--bs-dark) !important;
+}
+
+.card {
+  border: none !important;
+}
