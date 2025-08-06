@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import ImageService from '../services/ImageService';
-import { Readable } from 'stream';
 import JsonResponse from '../models/jsonReponse/JsonResponse';
 
 @injectable()
@@ -27,11 +26,6 @@ export default class ImageController {
     } catch (err) {
       res.status(400).send(err);
     }
-  }
-
-  public async convert(req: Request, res: Response): Promise<void> {
-    // process image
-    //const file = await sharp(fileBuffer).rotate().toFormat('jpeg').toBuffer();
   }
 
   public async getRawFile(req: Request, res: Response): Promise<void> {

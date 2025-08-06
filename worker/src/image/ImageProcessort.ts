@@ -12,7 +12,7 @@ export default class ImageProcessor {
 
   public async build(autoRotateOnExif: boolean = true): Promise<Buffer> {
     if (autoRotateOnExif) {
-      this.sharp.rotate(); // Auto-rotate based on EXIF
+      this.sharp.rotate(); // Auto-rotate based on EXIF // TODO: fix, this can be bugy when other rotates come
     }
 
     this.convertToFormat();

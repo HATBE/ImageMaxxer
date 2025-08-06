@@ -14,15 +14,29 @@
     <div class="col-12 col-md-8">
       <div class="card rounded-4 shadow-sm">
         <div class="card-body">
-          <form>
+          <app-banner
+            *ngIf="error"
+            [mb]="true"
+            [message]="error"
+            [type]="BannerType.ERROR"
+          ></app-banner>
+
+          <app-banner
+            [mb]="true"
+            *ngIf="success"
+            [message]="success"
+            [type]="BannerType.SUCCESS"
+          ></app-banner>
+
+          <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
             <!-- Conversion -->
             <div class="bg-body-tertiary rounded-3 p-3 mb-3">
-              <h5 class="mb-3">Conversion</h5>
+              <h5 class="mb-3 fw-bold">Conversion</h5>
               <div class="row g-3">
                 <div class="col-12 col-md-6">
                   <label for="format" class="form-label">Convert image to</label>
-                  <select class="form-select" id="format">
-                    <option value="-1" selected>Keep original format</option>
+                  <select class="form-select" formControlName="format" id="format">
+                    <option value="-1">Keep original format</option>
                     <option value="png">PNG</option>
                     <option value="jpg">JPG</option>
                     <option value="gif">GIF</option>
@@ -36,11 +50,11 @@
                   <input
                     type="number"
                     class="form-control"
+                    formControlName="quality"
                     id="quality"
                     min="1"
                     max="100"
                     step="1"
-                    value="90"
                   />
                 </div>
               </div>
@@ -48,12 +62,12 @@
 
             <!-- Sizing & rotation -->
             <div class="bg-body-tertiary rounded-3 p-3 mb-3">
-              <h5 class="mb-3">Size & Orientation</h5>
+              <h5 class="mb-3 fw-bold">Size & Orientation</h5>
               <div class="row g-3">
                 <div class="col-12 col-md-6">
                   <label for="aspect-ratio" class="form-label">Aspect ratio</label>
-                  <select class="form-select" id="aspect-ratio">
-                    <option value="-1" selected>Keep</option>
+                  <select class="form-select" formControlName="aspectRatio" id="aspect-ratio">
+                    <option value="-1">Keep</option>
                     <option value="1">Adjustable</option>
                     <option value="1-1">1:1</option>
                     <option value="16-9">16:9</option>
@@ -62,82 +76,162 @@
                   </select>
                 </div>
                 <div class="col-12 col-md-6">
-                  <label for="resize" class="form-label">Resize image</label>
+                  <label class="form-label">Resize image</label>
                   <div class="input-group">
-                    <input type="number" class="form-control" placeholder="width" />
+                    <input
+                      type="number"
+                      class="form-control"
+                      min="0"
+                      formControlName="resizeWidth"
+                      placeholder="width"
+                    />
                     <span class="input-group-text">px</span>
                     <span class="input-group-text"><i class="bi bi-x-lg"></i></span>
-                    <input type="number" class="form-control" placeholder="height" />
+                    <input
+                      type="number"
+                      class="form-control"
+                      min="0"
+                      formControlName="resizeHeight"
+                      placeholder="height"
+                    />
                     <span class="input-group-text">px</span>
                   </div>
                 </div>
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-3">
                   <label for="fit" class="form-label">Image fit</label>
-                  <select class="form-select" id="fit">
-                    <option value="contain" selected>Contain</option>
+                  <select class="form-select" formControlName="fit" id="fit">
+                    <option value="contain">Contain</option>
                     <option value="cover">Cover</option>
                     <option value="fill">Fill</option>
                     <option value="inside">Inside</option>
                     <option value="outside">Outside</option>
                   </select>
                 </div>
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-3">
                   <label for="rotate" class="form-label">Rotate (degrees)</label>
-                  <select class="form-select" id="rotate">
-                    <option value="0" selected>0°</option>
+                  <select class="form-select" formControlName="rotate" id="rotate">
+                    <option value="-270">-270°</option>
+                    <option value="-180">-180°</option>
+                    <option value="-90">-90°</option>
+                    <option value="0">0°</option>
                     <option value="90">90°</option>
                     <option value="180">180°</option>
                     <option value="270">270°</option>
                   </select>
                 </div>
-                <div class="col-12 col-md-3">
-                  <label for="flip" class="form-label">Flip</label>
-                  <select class="form-select" id="flip">
-                    <option value="none" selected>None</option>
-                    <option value="horizontal">Horizontal</option>
-                    <option value="vertical">Vertical</option>
-                  </select>
+                <div class="col-12 col-md-6 d-flex align-items-center">
+                  <div class="form-check form-switch me-3">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="flipHorizontal"
+                      formControlName="flipHorizontal"
+                    />
+                    <label class="form-check-label ms-2" for="flipHorizontal">
+                      Flip Horizontal
+                    </label>
+                  </div>
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="flipVertical"
+                      formControlName="flipVertical"
+                    />
+                    <label class="form-check-label ms-2" for="flipVertical">Flip Vertical</label>
+                  </div>
                 </div>
+
                 <div class="col-12">
-                  <label for="fillcolor" class="form-label">Fill color</label>
+                  <label for="fillColor" class="form-label">Fill color</label>
                   <input
                     type="color"
                     class="form-control form-control-color w-100"
-                    id="fillcolor"
-                    value="#563d7c"
+                    formControlName="fillColor"
+                    id="fillColor"
                   />
                 </div>
               </div>
             </div>
 
-
             <!-- Fill color & border -->
             <div class="bg-body-tertiary rounded-3 p-3 mb-3">
-              <h5 class="mb-3">Fill & Border</h5>
+              <h5 class="mb-3 fw-bold">Fill & Border</h5>
               <div class="row g-3">
                 <div class="col-12">
                   <label class="form-label">Border color</label>
                   <input
                     type="color"
                     class="form-control form-control-color w-100"
-                    id="border-color"
-                    value="#000000"
+                    formControlName="borderColor"
                   />
                 </div>
                 <div class="col-12">
-                  <label class="form-label">Border width (px)</label>
+                  <label class="form-label">Border width</label>
                   <div class="row g-2">
                     <div class="col-6 col-md-3">
-                      <input type="number" class="form-control" placeholder="Top" />
+                      <div class="input-group">
+                        <span class="input-group-text">
+                          <i class="bi bi-arrow-up-circle"></i>
+                        </span>
+                        <input
+                          type="number"
+                          min="0"
+                          max="20"
+                          class="form-control"
+                          formControlName="borderTop"
+                          placeholder="Top"
+                        />
+                        <span class="input-group-text">px</span>
+                      </div>
                     </div>
                     <div class="col-6 col-md-3">
-                      <input type="number" class="form-control" placeholder="Right" />
+                      <div class="input-group">
+                        <span class="input-group-text">
+                          <i class="bi bi-arrow-right-circle"></i>
+                        </span>
+                        <input
+                          type="number"
+                          min="0"
+                          max="20"
+                          class="form-control"
+                          formControlName="borderRight"
+                          placeholder="Right"
+                        />
+                        <span class="input-group-text">px</span>
+                      </div>
                     </div>
                     <div class="col-6 col-md-3">
-                      <input type="number" class="form-control" placeholder="Bottom" />
+                      <div class="input-group">
+                        <span class="input-group-text">
+                          <i class="bi bi-arrow-down-circle"></i>
+                        </span>
+                        <input
+                          type="number"
+                          min="0"
+                          max="20"
+                          class="form-control"
+                          formControlName="borderBottom"
+                          placeholder="Bottom"
+                        />
+                        <span class="input-group-text">px</span>
+                      </div>
                     </div>
                     <div class="col-6 col-md-3">
-                      <input type="number" class="form-control" placeholder="Left" />
+                      <div class="input-group">
+                        <span class="input-group-text">
+                          <i class="bi bi-arrow-left-circle"></i>
+                        </span>
+                        <input
+                          type="number"
+                          min="0"
+                          max="20"
+                          class="form-control"
+                          formControlName="borderLeft"
+                          placeholder="Left"
+                        />
+                        <span class="input-group-text">px</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -146,60 +240,84 @@
 
             <!-- Filters -->
             <div class="bg-body-tertiary rounded-3 p-3 mb-3">
-              <h5 class="mb-3">Filters</h5>
+              <h5 class="mb-3 fw-bold">Filters</h5>
               <div class="row g-4">
                 <div class="col-12 col-md-6">
-                  <label for="brightness" class="form-label">Brightness</label>
+                  <label for="brightness" class="form-label d-flex justify-content-between">
+                    <span>Brightness</span>
+                    <span>{{ editForm.get('brightness')?.value }}</span>
+                  </label>
                   <input
                     type="range"
                     class="form-range"
                     id="brightness"
+                    step="0.1"
                     min="0"
-                    max="200"
-                    step="1"
-                    value="100"
+                    max="3"
+                    formControlName="brightness"
                   />
                 </div>
                 <div class="col-12 col-md-6">
-                  <label for="saturation" class="form-label">Saturation</label>
+                  <label for="saturation" class="form-label d-flex justify-content-between">
+                    <span>Saturation</span>
+                    <span>{{ editForm.get('saturation')?.value }}</span>
+                  </label>
                   <input
                     type="range"
                     class="form-range"
                     id="saturation"
+                    step="0.1"
                     min="0"
-                    max="200"
-                    step="1"
-                    value="100"
+                    max="3"
+                    formControlName="saturation"
                   />
                 </div>
+
                 <div class="col-12 col-md-6">
-                  <label for="blur" class="form-label">Blur</label>
+                  <label for="blur" class="form-label d-flex justify-content-between">
+                    <span>Blur</span>
+                    <span>{{ editForm.get('blur')?.value }}</span>
+                  </label>
                   <input
                     type="range"
                     class="form-range"
                     id="blur"
+                    step="1"
                     min="0"
                     max="10"
-                    step="0.5"
-                    value="0"
+                    formControlName="blur"
                   />
                 </div>
+
                 <div class="col-12 col-md-3 d-flex align-items-center">
                   <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="grayscale" />
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="grayscale"
+                      formControlName="grayscale"
+                    />
                     <label class="form-check-label ms-2" for="grayscale">Grayscale</label>
                   </div>
                 </div>
                 <div class="col-12 col-md-3 d-flex align-items-center">
                   <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="invert" />
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="invert"
+                      formControlName="invert"
+                    />
                     <label class="form-check-label ms-2" for="invert">Invert</label>
                   </div>
                 </div>
               </div>
             </div>
+
             <!-- SUBMIT -->
-            <button class="btn btn-primary w-100">Send</button>
+            <button class="btn btn-primary w-100" type="submit">Send</button>
           </form>
         </div>
       </div>
