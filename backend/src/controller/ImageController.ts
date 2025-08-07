@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import ImageService from '../services/ImageService';
 import JsonResponse from '../models/jsonReponse/JsonResponse';
+import ImageEditOptions from '../models/ImageEditOptions';
 
 @injectable()
 export default class ImageController {
@@ -9,12 +10,13 @@ export default class ImageController {
 
   public async upload(req: Request, res: Response): Promise<void> {
     const fileBuffer = req.file!.buffer;
+    const imageEditOptions: ImageEditOptions = req.body.options;
 
     // TODO: check image sanitize ...
 
     // save image
     try {
-      const imagePath = await this.imageService.upload(fileBuffer);
+      const imagePath = await this.imageService.upload(fileBuffer, imageEditOptions);
 
       // TODO: staging db
 

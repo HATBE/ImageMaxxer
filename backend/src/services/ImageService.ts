@@ -9,39 +9,9 @@ import { v4 as uuidv4 } from 'uuid';
 export default class ImageService {
   public constructor(@inject(S3FileHandler) private fileHandler: S3FileHandler) {}
 
-  public async upload(file: Buffer): Promise<string> {
+  public async upload(file: Buffer, options: ImageEditOptions): Promise<string> {
     try {
-      // TODO: JUST FOR TESTING MOVE TO ROUTE LATER
-      const options: ImageEditOptions = {
-        format: 'gif',
-        resize: {
-          width: 6000,
-          height: 5000,
-          fit: 'contain',
-          upscale: true,
-        },
-        fillColor: '#f0f0ff',
-        rotate: 90,
-        flipHorizontal: true,
-        flipVertical: false,
-        compressionQuality: 82,
-        border: {
-          topWidth: 10,
-          bottomWidth: 10,
-          leftWidth: 10,
-          rightWidth: 10,
-          color: '#ff0000',
-        },
-        filters: {
-          brightness: 0.5,
-          saturation: 0.5,
-          blur: 2,
-          grayscale: false,
-          invert: false,
-        },
-      };
-
-      /*return*/ const filepath = await this.fileHandler.upload(file);
+      const filepath = await this.fileHandler.upload(file);
 
       // TODO: later make same calss as in worker hgere, connect with retry on app start not here on processing
       const connection = await amqp.connect('amqp://localhost');
