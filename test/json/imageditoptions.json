@@ -1,0 +1,30 @@
+{
+  "options": {
+    "format": "gif",
+    "resize": {
+      "width": 6000,
+      "height": 5000,
+      "fit": "contain",
+      "upscale": true
+    },
+    "fillColor": "#f0f0ff",
+    "rotate": 90,
+    "flipHorizontal": true,
+    "flipVertical": false,
+    "compressionQuality": 82,
+    "border": {
+      "topWidth": 10,
+      "bottomWidth": 10,
+      "leftWidth": 10,
+      "rightWidth": 10,
+      "color": "#ff00002"
+    },
+    "filters": {
+      "brightness": 0.5,
+      "saturation": 0.5,
+      "blur": 2,
+      "grayscale": false,
+      "invert": false
+    }
+  }
+}

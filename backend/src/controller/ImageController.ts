@@ -10,15 +10,14 @@ export default class ImageController {
 
   public async upload(req: Request, res: Response): Promise<void> {
     const fileBuffer = req.file!.buffer;
-    const imageEditOptions: ImageEditOptions = req.body.options;
 
     // TODO: check image sanitize ...
 
     // save image
     try {
-      const imagePath = await this.imageService.upload(fileBuffer, imageEditOptions);
+      const imagePath = await this.imageService.upload(fileBuffer);
 
-      // TODO: staging db
+      // TODO: staging db stuff
 
       res
         .status(201)
@@ -30,7 +29,17 @@ export default class ImageController {
     }
   }
 
+  public async edit(req: Request, res: Response): Promise<void> {
+    const id: string = req.params.id;
+    const imageEditOptions: ImageEditOptions = req.body.options;
+
+    const resId = await this.imageService.edit(id, imageEditOptions);
+
+    res.status(201).json(new JsonResponse(true, 'success', { id: resId }).generate());
+  }
+
   public async getRawFile(req: Request, res: Response): Promise<void> {
+    // TODO: check if image exists
     const imageName: string = req.params.name;
 
     if (!imageName) {

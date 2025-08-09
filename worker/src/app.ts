@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import S3FileHandler from './lib/S3FileHandler';
 import { Readable } from 'stream';
 import { FileResponse } from './model/FileResponse';
-import ImageProcessor from './image/ImageProcessort';
+import ImageProcessor from './image/ImageProcessor';
 import RabbitMQConnector from './lib/RabbitMQConnector';
 import QueueImageMessage from './model/QueueImageMessage';
 
@@ -29,8 +29,6 @@ async function startWorker() {
     try {
       const queueInfo = await connection.getChannel().checkQueue(queue);
       console.log(`Items in QUEUE: ${queueInfo.messageCount}`);
-
-      //console.log('Options:', content.options);
 
       const fileHandler = new S3FileHandler();
 
