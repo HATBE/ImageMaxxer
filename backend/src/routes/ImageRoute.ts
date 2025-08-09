@@ -6,6 +6,7 @@ import { body, param } from 'express-validator';
 import validateRequest from '../middleware/validate-request';
 import { inject } from 'inversify';
 import JsonResponse from '../models/jsonReponse/JsonResponse';
+import { imageEditOptionsValidator } from './validations/ImageEditOptionsValidator';
 
 export default class ImageRoute extends AbstractRoute {
   public constructor(@inject(ImageController) private imageController: ImageController) {
@@ -22,9 +23,14 @@ export default class ImageRoute extends AbstractRoute {
       this.imageController.upload(req, res);
     });
 
-    this.getRouter().post('/edit/:id', async (req: Request, res: Response) => {
-      this.imageController.edit(req, res);
-    });
+    this.getRouter().post(
+      '/edit/:id',
+      imageEditOptionsValidator,
+      validateRequest,
+      async (req: Request, res: Response) => {
+        this.imageController.edit(req, res);
+      }
+    );
 
     this.getRouter().get(
       '/:name',
