@@ -14,10 +14,6 @@ export default class S3FileHandler {
     this.s3Client = S3ClientWrapper.getInstance();
   }
 
-  private generateFileName(id: string, extension: string): string {
-    return `${id}.${extension}`;
-  }
-
   public async upload(id: string, fileBuffer: Buffer): Promise<string> {
     const mimeType = await FileHelper.detectMimeType(fileBuffer);
 
@@ -25,7 +21,7 @@ export default class S3FileHandler {
       throw new Error('Unsupported or undetectable file type.');
     }
 
-    const fileName = this.generateFileName(id, mimeType!.ext);
+    const fileName = FileHelper.generateFileName(id, mimeType!.ext);
 
     const command = new PutObjectCommand({
       Bucket: this.imageBucketName,

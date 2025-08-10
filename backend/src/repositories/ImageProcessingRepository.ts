@@ -8,9 +8,8 @@ import { ImageProcessingState } from '../models/ImageProcessingState';
 export default class ImageProcessingRepository {
   private repository = AppDataSource.getRepository(ImageProcessing);
 
-  public async create(imageId: string): Promise<ImageProcessing> {
+  public async create(id: string, imageId: string): Promise<ImageProcessing> {
     const startedTimestamp = Math.floor(Date.now() / 1000);
-    const id = uuidv4();
     const state = ImageProcessingState.Pending;
 
     const imageProcessing = this.repository.create({

@@ -7,12 +7,16 @@ import { v4 as uuidv4 } from 'uuid';
 import FileHelper from '../lib/FileHelper';
 import ImageRepository from '../repositories/ImageRepository';
 import ImageDto from '../models/entities/image/ImageDto';
+import { FileResponse } from '../models/FileResponse';
+import ImageProcessingRepository from '../repositories/ImageProcessingRepository';
+import ImageProcessingDto from '../models/entities/imageProcessing/ImageProcessingDto';
 
 @injectable()
 export default class ImageService {
   public constructor(
     @inject(S3FileHandler) private fileHandler: S3FileHandler,
-    @inject(ImageRepository) private imageRepository: ImageRepository
+    @inject(ImageRepository) private imageRepository: ImageRepository,
+    @inject(ImageProcessingRepository) private imageProcessingRepository: ImageProcessingRepository
   ) {}
 
   public async upload(file: Buffer): Promise<ImageDto> {
@@ -35,20 +39,31 @@ export default class ImageService {
     }
   }
 
-  public async edit(filepath: string, options: ImageEditOptions) {
+  public async edit(imageId: string, options: ImageEditOptions) {
     // TODO: later make same calss as in worker hgere, connect with retry on app start not here on processing
     const connection = await amqp.connect('amqp://localhost');
     const channel = await connection.createChannel();
 
     await channel.assertQueue('images', { durable: true });
     // TODO: open ws or send ok message or something, just handle later that client checks a ws to check the state of the image? idk, lets wait and look maybe make a sql db thing or so, lets see
-    const genId = uuidv4();
+
+    const image = await this.imageRepository.getById(imageId);
+
+    if (!image) {
+      return false; // TODO: handle with throw
+    }
+
+    // TODO: check if user owns image and stuff
+
+    const processingId = uuidv4();
+
+    const imageProcessing = await this.imageProcessingRepository.create(processingId, imageId);
 
     const message: QueueImageMessage = {
-      id: genId,
+      id: processingId,
       timestamp: Date.now(),
       options,
-      path: filepath,
+      path: `${image.id}.${image.extension}`,
     };
     channel.sendToQueue('images', Buffer.from(JSON.stringify(message)), {
       persistent: true,
@@ -57,10 +72,10 @@ export default class ImageService {
     await channel.close();
     await connection.close();
 
-    return genId;
+    return ImageProcessingDto.fromEntity(imageProcessing);
   }
 
-  public async getRawFile(fileName: string) {
+  public async getRawFile(fileName: string): Promise<FileResponse> {
     try {
       return this.fileHandler.get(fileName);
     } catch (err) {

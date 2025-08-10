@@ -5,4 +5,8 @@ export default class FileHelper {
     const fileType = await fileTypeFromBuffer(buffer);
     return fileType; // e.g., { ext: 'png', mime: 'image/png' }
   }
+
+  public static generateFileName(name: string, extension: string): string {
+    return `${name}.${extension}`;
+  }
 }
