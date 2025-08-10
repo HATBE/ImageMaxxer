@@ -36,4 +36,12 @@ export default class ImageProcessingRepository {
     // TODO: pagination
     return await this.repository.find({ where: { imageId } });
   }
+
+  public async changeState(
+    id: string,
+    state: ImageProcessingState
+  ): Promise<ImageProcessing | null> {
+    await this.repository.update(id, { state });
+    return this.repository.findOne({ where: { id } });
+  }
 }

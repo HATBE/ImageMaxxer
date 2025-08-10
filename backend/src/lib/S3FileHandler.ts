@@ -1,10 +1,9 @@
-import { v4 as uuidv4 } from 'uuid';
 import { injectable } from 'inversify';
 import S3ClientWrapper from './s3Client';
 import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
-import { fileTypeFromBuffer } from 'file-type';
 import { Readable } from 'stream';
 import { FileResponse } from '../models/FileResponse';
+import FileHelper from './FileHelper';
 
 @injectable()
 export default class S3FileHandler {
@@ -15,29 +14,24 @@ export default class S3FileHandler {
     this.s3Client = S3ClientWrapper.getInstance();
   }
 
-  private generateFileName(extension: string): string {
-    return `${uuidv4()}.${extension}`;
+  private generateFileName(id: string, extension: string): string {
+    return `${id}.${extension}`;
   }
 
-  private async detectMimeType(buffer: Buffer): Promise<{ mime: string; ext: string } | undefined> {
-    const fileType = await fileTypeFromBuffer(buffer);
-    return fileType; // e.g., { ext: 'png', mime: 'image/png' }
-  }
+  public async upload(id: string, fileBuffer: Buffer): Promise<string> {
+    const mimeType = await FileHelper.detectMimeType(fileBuffer);
 
-  public async upload(fileBuffer: Buffer): Promise<string> {
-    const fileType = await this.detectMimeType(fileBuffer);
-
-    if (!fileType) {
+    if (!mimeType) {
       throw new Error('Unsupported or undetectable file type.');
     }
 
-    const fileName = this.generateFileName(fileType!.ext);
+    const fileName = this.generateFileName(id, mimeType!.ext);
 
     const command = new PutObjectCommand({
       Bucket: this.imageBucketName,
       Key: fileName,
       Body: fileBuffer,
-      ContentType: fileType!.mime,
+      ContentType: mimeType!.mime,
     });
 
     try {

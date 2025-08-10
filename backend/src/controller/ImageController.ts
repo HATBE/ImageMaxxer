@@ -13,11 +13,8 @@ export default class ImageController {
 
     // TODO: check image sanitize ...
 
-    // save image
     try {
       const imagePath = await this.imageService.upload(fileBuffer);
-
-      // TODO: staging db stuff
 
       res
         .status(201)
