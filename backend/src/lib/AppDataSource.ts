@@ -1,10 +1,9 @@
 import 'reflect-metadata';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
-import User from '../models/User';
-import { Image } from '../models/Image';
-import ImageProcessing from '../models/ImageProcessing';
-import ImageProcessingState from '../models/ImageProcessingStates';
+import User from '../models/entities/User';
+import { Image } from '../models/entities/Image';
+import ImageProcessing from '../models/entities/ImageProcessing';
 dotenv.config();
 
 const isTrue = (v?: string) => String(v).toLowerCase() === 'true';
@@ -19,8 +18,7 @@ export const AppDataSource = new DataSource({
   // dev only; use migrations for prod:
   synchronize: isTrue(process.env.DB_SYNC) ?? true,
   logging: isTrue(process.env.DB_LOGGING),
-  // point to your entities (ts for dev, js for prod build)
-  entities: [User, Image, ImageProcessing, ImageProcessingState],
+  entities: [User, Image, ImageProcessing],
   migrations: ['src/migration/**/*.ts'],
   // sensible MariaDB defaults
   charset: 'utf8mb4',
