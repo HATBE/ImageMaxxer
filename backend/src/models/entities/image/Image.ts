@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
-import User from './User';
+import User from '../user/User';
 
 @Entity({ name: 'images' })
 export class Image {

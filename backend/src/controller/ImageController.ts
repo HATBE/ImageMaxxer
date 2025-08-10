@@ -14,13 +14,11 @@ export default class ImageController {
     // TODO: check image sanitize ...
 
     try {
-      const imagePath = await this.imageService.upload(fileBuffer);
+      const image = await this.imageService.upload(fileBuffer);
 
       res
         .status(201)
-        .json(
-          new JsonResponse(true, 'Image uploaded successfully', { path: imagePath }).generate()
-        );
+        .json(new JsonResponse(true, 'Image uploaded successfully', { image }).generate());
     } catch (err) {
       res.status(400).send(err);
     }

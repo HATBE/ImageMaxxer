@@ -6,6 +6,7 @@ import QueueImageMessage from '../models/QueueImageMessage';
 import { v4 as uuidv4 } from 'uuid';
 import FileHelper from '../lib/FileHelper';
 import ImageRepository from '../repositories/ImageRepository';
+import ImageDto from '../models/entities/image/ImageDto';
 
 @injectable()
 export default class ImageService {
@@ -14,7 +15,7 @@ export default class ImageService {
     @inject(ImageRepository) private imageRepository: ImageRepository
   ) {}
 
-  public async upload(file: Buffer): Promise<string> {
+  public async upload(file: Buffer): Promise<ImageDto> {
     try {
       const id = uuidv4();
       const mimeType = await FileHelper.detectMimeType(file);
@@ -28,7 +29,7 @@ export default class ImageService {
       // TODO: later handle the userId with a loggedin User
       const image = await this.imageRepository.create(id, null, mimeType!.ext);
 
-      return filepath;
+      return ImageDto.fromEntity(image);
     } catch (err) {
       throw err;
     }

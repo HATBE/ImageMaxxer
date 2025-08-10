@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import { AppDataSource } from '../lib/AppDataSource';
-import ImageProcessing from '../models/entities/ImageProcessing';
+import ImageProcessing from '../models/entities/imageProcessing/ImageProcessing';
 import { v4 as uuidv4 } from 'uuid';
 import { ImageProcessingState } from '../models/ImageProcessingState';
 

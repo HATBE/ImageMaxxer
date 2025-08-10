@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
-import { Image } from './Image';
-import { ImageProcessingState } from '../ImageProcessingState';
+import { Image } from '../image/Image';
+import { ImageProcessingState } from '../../ImageProcessingState';
 
 @Entity({ name: 'imageprocessing' })
 export default class ImageProcessing {

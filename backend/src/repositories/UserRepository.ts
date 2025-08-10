@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import { AppDataSource } from '../lib/AppDataSource';
-import User from '../models/entities/User';
+import User from '../models/entities/user/User';
 import { v4 as uuidv4 } from 'uuid';
 
 @injectable()

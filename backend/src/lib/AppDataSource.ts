@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
-import User from '../models/entities/User';
-import { Image } from '../models/entities/Image';
-import ImageProcessing from '../models/entities/ImageProcessing';
+import User from '../models/entities/user/User';
+import { Image } from '../models/entities/image/Image';
+import ImageProcessing from '../models/entities/imageProcessing/ImageProcessing';
 dotenv.config();
 
 const isTrue = (v?: string) => String(v).toLowerCase() === 'true';
