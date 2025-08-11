@@ -29,9 +29,12 @@ export default class ImageController {
     const imageEditOptions: ImageEditOptions = req.body.options;
 
     // TODO: what to return? propably just the id for the processing with the websocket link os so, maybe just then send id of procesing and the frontend opens then ws, the ws scans db for state and returns to user or so maybe check queue
-    const resId = await this.imageService.edit(id, imageEditOptions);
-
-    res.status(201).json(new JsonResponse(true, 'success', { id: resId }).generate());
+    try {
+      const imageProcessing = await this.imageService.edit(id, imageEditOptions);
+      res.status(201).json(new JsonResponse(true, 'success', { imageProcessing }).generate());
+    } catch (error: any) {
+      res.status(404).json(new JsonResponse(true, (error as Error).message).generate());
+    }
   }
 
   public async getRawFile(req: Request, res: Response): Promise<void> {

@@ -39,7 +39,10 @@ export default class ImageService {
     }
   }
 
-  public async edit(imageId: string, options: ImageEditOptions) {
+  public async edit(
+    imageId: string,
+    options: ImageEditOptions
+  ): Promise<ImageProcessingDto | null> {
     // TODO: later make same calss as in worker hgere, connect with retry on app start not here on processing
     const connection = await amqp.connect('amqp://localhost');
     const channel = await connection.createChannel();
@@ -49,21 +52,25 @@ export default class ImageService {
 
     const image = await this.imageRepository.getById(imageId);
 
+    console.log(image);
+
     if (!image) {
-      return false; // TODO: handle with throw
+      throw new Error('This image does not exist!');
     }
 
     // TODO: check if user owns image and stuff
 
     const processingId = uuidv4();
 
-    const imageProcessing = await this.imageProcessingRepository.create(processingId, imageId);
+    await this.imageProcessingRepository.create(processingId, imageId);
+    const imageProcessing = this.imageProcessingRepository.getById(processingId);
 
     const message: QueueImageMessage = {
       id: processingId,
       timestamp: Date.now(),
       options,
-      path: `${image.id}.${image.extension}`,
+      imageId: image.id,
+      extension: image.extension,
     };
     channel.sendToQueue('images', Buffer.from(JSON.stringify(message)), {
       persistent: true,

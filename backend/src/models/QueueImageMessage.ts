@@ -4,5 +4,6 @@ export default interface QueueImageMessage {
   id: string;
   timestamp: number;
   options: ImageEditOptions;
-  path: string;
+  imageId: string;
+  extension: string;
 }
