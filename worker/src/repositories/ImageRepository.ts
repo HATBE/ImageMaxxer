@@ -1,8 +1,6 @@
-import { injectable } from 'inversify';
 import { AppDataSource } from '../lib/AppDataSource';
 import { Image } from '../models/entities/image/Image';
 
-@injectable()
 export default class ImageRepository {
   private repository = AppDataSource.getRepository(Image);
 

@@ -3,7 +3,7 @@ import S3ClientWrapper from './S3ClientWrapper';
 import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { fileTypeFromBuffer } from 'file-type';
 import { Readable } from 'stream';
-import { FileResponse } from '../model/FileResponse';
+import { FileResponse } from '../models/FileResponse';
 
 export default class S3FileHandler {
   private s3Client;

@@ -1,14 +1,14 @@
 import dotenv from 'dotenv';
 import S3FileHandler from './lib/S3FileHandler';
 import { Readable } from 'stream';
-import { FileResponse } from './model/FileResponse';
 import ImageProcessor from './image/ImageProcessor';
 import RabbitMQConnector from './lib/RabbitMQConnector';
-import QueueImageMessage from './model/QueueImageMessage';
+import QueueImageMessage from './models/QueueImageMessage';
 import { AppDataSource } from './lib/AppDataSource';
 import ImageProcessingRepository from './repositories/ImageProcessingRepository';
-import { ImageProcessingState } from './model/ImageProcessingState';
-import ImageProcessing from './model/entities/imageProcessing/ImageProcessing';
+import { ImageProcessingState } from './models/ImageProcessingState';
+import ImageProcessing from './models/entities/imageProcessing/ImageProcessing';
+import { FileResponse } from './models/FileResponse';
 
 dotenv.config();
 
@@ -56,7 +56,7 @@ async function startWorker() {
 
       const fileHandler = new S3FileHandler();
 
-      const file: FileResponse = await fileHandler.get(`${content.id}.${content.extension}`);
+      const file: FileResponse = await fileHandler.get(`${content.imageId}.${content.extension}`);
 
       const imageBuffer = await streamToBuffer(file.stream);
 

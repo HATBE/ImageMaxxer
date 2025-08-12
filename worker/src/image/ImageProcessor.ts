@@ -1,5 +1,5 @@
 import sharp, { Sharp } from 'sharp';
-import ImageEditOptions from '../model/ImageEditOptions';
+import ImageEditOptions from '../models/ImageEditOptions';
 
 export default class ImageProcessor {
   private sharp: Sharp;

@@ -12,18 +12,19 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "reflect-metadata": "^0.2.2",
-    "class-transformer": "^0.5.1",
-    "typeorm": "^0.3.25",
     "@aws-sdk/client-s3": "^3.842.0",
     "@aws-sdk/s3-request-presigner": "^3.842.0",
     "@types/dotenv": "^6.1.1",
     "@types/file-type": "^10.6.0",
     "amqplib": "^0.10.8",
+    "class-transformer": "^0.5.1",
     "dotenv": "^17.2.0",
     "file-type": "^21.0.0",
+    "mysql2": "^3.14.3",
+    "reflect-metadata": "^0.2.2",
     "sanitize-filename": "^1.6.3",
     "sharp": "^0.34.2",
+    "typeorm": "^0.3.25",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

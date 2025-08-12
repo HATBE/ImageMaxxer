@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
-import ImageProcessing from '../model/entities/imageProcessing/ImageProcessing';
-import { Image } from '../model/entities/image/Image';
-import User from '../model/entities/user/User';
+import ImageProcessing from '../models/entities/imageProcessing/ImageProcessing';
+import { Image } from '../models/entities/image/Image';
+import User from '../models/entities/user/User';
 
 dotenv.config();
 
